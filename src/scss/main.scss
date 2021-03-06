@@ -1,0 +1,24 @@
+/* 
+==============================================
+CONTENT:	Project Name Here
+AUTHOR:		Eric Canosa
+==============================================
+
+TABLE OF CONTENTS:
+
+0. Reset
+1. STYLES
+
+==============================================
+*/
+
+/* 0. Reset ================================= */
+@use 'reset';
+@use 'variables';
+@use 'mixins';
+
+/* 1. STYLES ================================= */
+
+*, *::before, *::after {
+	box-sizing: border-box;
+}
