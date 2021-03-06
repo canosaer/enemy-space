@@ -1,6 +1,6 @@
 /* 
 ==============================================
-CONTENT:	Project Name Here
+CONTENT:	Dark Moon: Enemy Space
 AUTHOR:		Eric Canosa
 ==============================================
 
@@ -21,4 +21,66 @@ TABLE OF CONTENTS:
 
 *, *::before, *::after {
 	box-sizing: border-box;
+}
+
+body{
+	font-family: variables.$body-text;
+	position: relative;
+}
+
+a {
+	text-decoration: none;
+	color: unset;
+}
+
+.content-grid{
+	min-width: 334px;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-auto-rows: auto;
+}
+
+.title-screen{
+	background: url(../../src/img/title_image.jpg);
+	background-position: center;
+	background-size: cover;
+	padding-bottom: 22rem;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-auto-rows: auto;
+
+	&__title{
+		grid-column: 1/-1;
+		text-align: right;
+		margin: 2rem 4% 3rem;
+		font-size: 3rem;
+		position: relative;
+		font-family: variables.$title;
+		color: white;
+		text-transform: uppercase;
+	}
+
+	&__subtitle{
+		position: absolute;
+		color: palevioletred;
+		font-size: 2rem;
+		top: 2.75rem;
+		right: 0rem;
+		font-family: variables.$handwriting;
+	}
+
+	&__options{
+		margin-left:auto;
+		text-align: right;
+		color: white;
+		margin-right: 4%;
+		text-transform: uppercase;
+		font-size: 1.25rem;
+	}
+
+	&__item{
+		margin: 0.5rem;
+		padding: 0.5rem;
+		cursor: pointer;
+	}
 }
