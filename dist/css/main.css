@@ -175,7 +175,7 @@ a {
   background: url(../../src/img/title_image.jpg);
   background-position: center;
   background-size: cover;
-  padding-bottom: 22rem;
+  padding-bottom: 33.3%;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr;
@@ -212,5 +212,16 @@ a {
   margin: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
+  transition: color 150ms;
+}
+.title-screen__item:hover {
+  color: slategrey;
+}
+.title-screen__footer {
+  grid-column: 1/-1;
+  position: absolute;
+  color: lightgray;
+  bottom: 1%;
+  right: 5%;
 }
 /*# sourceMappingURL=main.css.map */
