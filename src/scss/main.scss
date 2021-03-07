@@ -44,36 +44,34 @@ a {
 	background: url(../../src/img/title_image.jpg);
 	background-position: center;
 	background-size: cover;
-	padding-bottom: 33.3%;
-	display: grid;
+	padding: 0 5% 50% 0;
+	// display: grid;
+	display: none;
 	grid-template-columns: 1fr;
 	grid-auto-rows: auto;
 
 	&__title{
 		grid-column: 1/-1;
 		text-align: right;
-		margin: 2rem 4% 3rem;
+		margin-top: 2rem;
 		font-size: 3rem;
-		position: relative;
 		font-family: variables.$title;
 		color: white;
 		text-transform: uppercase;
 	}
 
 	&__subtitle{
-		position: absolute;
+		text-align: right;
 		color: palevioletred;
 		font-size: 2rem;
-		top: 2.75rem;
-		right: 0rem;
 		font-family: variables.$handwriting;
+		margin-bottom: 1.5rem;
 	}
 
 	&__options{
 		margin-left:auto;
 		text-align: right;
 		color: white;
-		margin-right: 4%;
 		text-transform: uppercase;
 		font-size: 1.25rem;
 	}
@@ -97,5 +95,32 @@ a {
 		// left: 50%;
 		// transform: translate(-50%, -50%);
 		right: 5%;
+	}
+}
+
+.game-display{
+	background: url(../../src/img/game_mat.jpg);
+	background-position: top;
+	background-size: cover;
+	// padding-bottom: 50%;
+	display: grid;
+	// display: none;
+	grid-template-columns: 1fr;
+	grid-auto-rows: auto;
+
+	&__title{
+		margin-top: 1rem;
+		text-align: center;
+		font-size: 2rem;
+		color: white;
+		font-family: variables.$title;
+		text-transform: uppercase;
+	}
+
+	&__subtitle{
+		font-size: 2rem;
+		color: palevioletred;
+		font-family: variables.$handwriting;
+		text-align: center;
 	}
 }

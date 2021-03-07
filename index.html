@@ -20,7 +20,8 @@
 
 	<main class="content-grid">
 		<section class="title-screen">
-			<h1 class="title-screen__title">Dark Moon<span class="title-screen__subtitle">Enemy Space</span></h1>
+			<h1 class="title-screen__title">Dark Moon</h1>
+			<h2 class="title-screen__subtitle">Enemy Space</h2>
 			<ul class="title-screen__options">
 				<li class="title-screen__item">Continue</li>
 				<li class="title-screen__item">New Game</li>
@@ -29,14 +30,66 @@
 			<footer class="title-screen__footer">&#169; 2021 by Eric Canosa</footer>
 		</section>
 		<section class="game-display">
-			<section class="opponent-mat">
-				<div class="opponent-mat__ship"></div>
-				<ul class="opponent-mat__components">
-					
+			<h1 class="game-display__title">DARK MOON</h1>
+			<h2 class="game-display__subtitle">Enemy Space</h2>
+			<div class="message-bar">
+				<ul class="message-bar__list">
+					<li class="message-bar__message"></li>
+					<li class="message-bar__message"></li>
 				</ul>
+			</div>
+			<section class="player-mat player-mat_opponent">
+				<div class="ship ship_opponent"></div>
+				<ul class="components components_opponent">
+					<li class="components__item components__item_opp1"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+				</ul>
+				<ul class="consumables consumables_opponent">
+					<li class="consumables__item"></li>
+				</ul>
+				<div class="crew crew_opponent">
+					<p class="crew__pilot">Pilot: <span class="crew__pilot-level crew__pilot-level_opponent"></span></p>
+					<p class="crew__gunner">Gunner: <span class="crew__gunner-level crew__gunner-level_opponent"></span></p>
+					<p class="crew__engineer">Engineer: <span class="crew__engineer-level crew__engineer-level_opponent"></span></p>
+				</div>
 			</section>
-			<section class="player-mat">
-
+			<section class="player-mat player-mat_human">
+				<div class="ship ship_human"></div>
+				<ul class="components components_human">
+					<li class="components__item components__item_hum1"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+					<li class="components__item"></li>
+				</ul>
+				<ul class="consumables consumables_human">
+					<li class="consumables__item"></li>
+				</ul>
+				<div class="crew crew_human">
+					<p class="crew__pilot">Pilot: <span class="crew__pilot-level crew__pilot-level_human"></span></p>
+					<p class="crew__gunner">Gunner: <span class="crew__gunner-level crew__gunner-level_human"></span></p>
+					<p class="crew__engineer">Engineer: <span class="crew__engineer-level crew__engineer-level_human"></span></p>
+				</div>
+				<div class="xp">
+					<h2 class="xp__heading">XP</h2>
+					<p class="xp__value">0</p>
+				</div>
+				<ul class="special-actions">
+					<li class="special-actions__attack-run">Attack Run</li>
+					<li class="special-actions__expose">Expose</li>
+					<li class="special-actions__hack">Hack</li>
+				</ul>
 			</section>
 		</section>
 	</main>
