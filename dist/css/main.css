@@ -172,7 +172,7 @@ a {
 }
 
 .title-screen {
-  background: url(../../src/img/title_image.jpg);
+  background: url("../../src/img/title_image.jpg");
   background-position: center;
   background-size: cover;
   padding: 0 5% 50% 0;
@@ -222,9 +222,10 @@ a {
 }
 
 .game-display {
-  background: url(../../src/img/game_mat.jpg);
-  background-position: top;
+  background: url("../../src/img/game_mat.jpg");
+  background-position: center;
   background-size: cover;
+  padding-bottom: 10%;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr;
@@ -238,11 +239,230 @@ a {
   color: white;
   font-family: "Gugi", cursive;
   text-transform: uppercase;
+  cursor: pointer;
 }
 .game-display__subtitle {
   font-size: 2rem;
   color: palevioletred;
   font-family: "Yellowtail", cursive;
   text-align: center;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.message-bar {
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+.message-bar__message {
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+.message-bar__message_current {
+  height: 1rem;
+  color: white;
+}
+.message-bar__message_last {
+  height: 1rem;
+  color: gray;
+}
+
+.player-mat {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 0.25fr 1fr 4fr 1fr 1.5fr 1fr 1fr 0.25fr;
+  grid-template-columns: 0.25fr 1fr 4fr 1fr 1.5fr 1fr 1fr 0.25fr;
+  grid-auto-rows: auto;
+  padding-top: 0.5rem;
+}
+.player-mat_opponent {
+  -ms-grid-columns: 0.25fr 1fr 4fr 1fr 1.5fr;
+  grid-template-columns: 0.25fr 1fr 4fr 1fr 1.5fr;
+  margin-top: 2.5rem;
+}
+
+.ship-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  -ms-grid-row-align: center;
+      align-self: center;
+  margin-right: 7.5%;
+}
+.ship-display__image {
+  height: 6.5rem;
+  width: 6.5rem;
+  border-radius: 5%;
+  margin-bottom: 0.5rem;
+}
+.ship-display__image_opponent {
+  background: url("../../src/img/ships/fighter.png");
+  background-position: center;
+  background-size: cover;
+}
+.ship-display__image_human {
+  background: url("../../src/img/ships/playership.png");
+  background-position: center;
+  background-size: cover;
+}
+.ship-display__name {
+  color: white;
+  text-align: center;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.ship-display__name_human {
+  cursor: pointer;
+}
+
+.components {
+  border: 2px double lightgray;
+  align-items: center;
+  -ms-grid-column: 3;
+  -ms-grid-column-span: 1;
+  grid-column: 3/4;
+  display: -ms-grid;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(2.9rem, 1fr));
+  grid-auto-rows: auto;
+  gap: 3.3%;
+  padding: 3.3%;
+  position: relative;
+}
+.components__item {
+  background: url("../../src/img/components/auto_cannon.png");
+  background-size: cover;
+  background-position: center;
+  height: 4.5rem;
+  width: 3rem;
+  cursor: pointer;
+}
+.components:after {
+  content: "Components";
+  position: absolute;
+  top: -1.2rem;
+  left: 0.2rem;
+  color: palegoldenrod;
+  font-family: "Yellowtail", cursive;
+  font-size: 1.5rem;
+}
+
+.consumables {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid slategray;
+  border-left: none;
+  color: white;
+  font-size: 0.75rem;
+  -ms-grid-column: 4;
+  -ms-grid-column-span: 1;
+  grid-column: 4/5;
+  position: relative;
+}
+.consumables:after {
+  content: "Consumables";
+  position: absolute;
+  top: -0.85rem;
+  left: 0rem;
+  color: palegoldenrod;
+  font-family: "Yellowtail", cursive;
+  font-size: 1rem;
+}
+
+.crew {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  -ms-grid-column: 5;
+  -ms-grid-column-span: 1;
+  grid-column: 5/6;
+  position: relative;
+  padding: 1rem 0.5rem 0rem;
+}
+.crew__pilot, .crew__gunner, .crew__engineer {
+  font-size: 0.8rem;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 1;
+  grid-column: 1/2;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.crew__pilot-level, .crew__gunner-level, .crew__engineer-level {
+  -ms-grid-column: 2;
+  -ms-grid-column-span: 1;
+  grid-column: 2/3;
+  color: palevioletred;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+.crew:after {
+  content: "Crew";
+  position: absolute;
+  top: -1.2rem;
+  left: 0.4rem;
+  color: palegoldenrod;
+  font-family: "Yellowtail", cursive;
+  font-size: 1.5rem;
+}
+
+.special-actions {
+  display: flex;
+  flex-direction: column;
+  -ms-grid-column: 6;
+  -ms-grid-column-span: 1;
+  grid-column: 6/7;
+  position: relative;
+  padding-top: 2.25rem;
+}
+.special-actions__button {
+  background: slategray;
+  color: white;
+  text-align: center;
+  padding: 0.25rem;
+  font-size: 0.75rem;
+  margin: 0.25rem 0;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+.special-actions:after {
+  content: "Special Actions";
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: palegoldenrod;
+  font-family: "Yellowtail", cursive;
+  font-size: 1.5rem;
+}
+
+.xp {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid palegoldenrod;
+  border-radius: 50%;
+  height: 3.75rem;
+  padding: 0.25rem;
+  width: 4rem;
+  justify-content: space-between;
+  -ms-grid-column: 7;
+  -ms-grid-column-span: 1;
+  grid-column: 7/8;
+  margin-left: 7.5%;
+}
+.xp__heading {
+  color: palevioletred;
+  font-size: 1.1rem;
+  border-radius: 5%;
+  text-align: center;
+  margin: 0.25rem 0;
+}
+.xp__value {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.4rem;
 }
 /*# sourceMappingURL=main.css.map */
