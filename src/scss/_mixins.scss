@@ -17,3 +17,48 @@
     @content;
   }
 }
+
+@mixin item-display{
+  border: 2px double lightgray;
+	align-items: center;
+	grid-column: 3/4;
+
+	display: grid;
+	grid-auto-rows: auto;
+	position: relative;
+
+	&__item{
+		background:url("../../src/img/components/auto_cannon.png");
+		background-size: cover;
+		background-position: center;
+		cursor: pointer;
+	}
+
+	&:after{
+		position: absolute;
+		top:-1.2rem;
+		left: 0.2rem;
+		color: palegoldenrod;
+		font-family: variables.$handwriting;
+		font-size: 1.5rem;
+	}
+}
+
+@mixin generic-display{
+  display: flex;
+	flex-direction: column;
+	color: white;
+	grid-column: 4/5;
+	position: relative;
+	padding: 1rem 0.5rem 0rem;
+	
+
+	&:after{
+		position: absolute;
+		top:-1.2rem;
+		left: 0.4rem;
+		color: palegoldenrod;
+		font-family: variables.$handwriting;
+		font-size: 1.5rem;
+	}
+}

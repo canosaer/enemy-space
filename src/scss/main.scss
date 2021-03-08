@@ -26,6 +26,7 @@ TABLE OF CONTENTS:
 body{
 	font-family: variables.$body-text;
 	position: relative;
+	background:slategray;
 }
 
 a {
@@ -97,7 +98,8 @@ a {
 }
 
 .game-display{
-	background: url("../../src/img/game_mat.jpg");
+	// background: url("../../src/img/game_mat.jpg");
+	background: url("../../src/img/dock.jpg");
 	background-position: center;
 	background-size: cover;
 	padding-bottom: 10%;
@@ -155,6 +157,7 @@ a {
 	&_opponent{
 		grid-template-columns: 0.25fr 1fr 4fr 1fr 1.5fr;
 		margin-top: 2.5rem;
+		display: none;
 	}
 }
 
@@ -198,34 +201,18 @@ a {
 }
 
 .components{
-	border: 2px double lightgray;
-	align-items: center;
-	grid-column: 3/4;
-
-	display: grid;
+	@include mixins.item-display;
 	grid-template-columns: repeat( auto-fit, minmax(2.9rem, 1fr) );
-	grid-auto-rows: auto;
 	gap: 3.3%;
 	padding: 3.3%;
-	position: relative;
 
 	&__item{
-		background:url("../../src/img/components/auto_cannon.png");
-		background-size: cover;
-		background-position: center;
 		height: 4.5rem;
 		width: 3rem;
-		cursor: pointer;
 	}
 
 	&:after{
 		content: "Components";
-		position: absolute;
-		top:-1.2rem;
-		left: 0.2rem;
-		color: palegoldenrod;
-		font-family: variables.$handwriting;
-		font-size: 1.5rem;
 	}
 }
 
@@ -251,12 +238,8 @@ a {
 }
 
 .crew{
-	display: flex;
-	flex-direction: column;
-	color: white;
+	@include mixins.generic-display;
 	grid-column: 5/6;
-	position: relative;
-	padding: 1rem 0.5rem 0rem;
 
 	&__pilot, &__gunner, &__engineer{
 		font-size: 0.8rem;
@@ -274,12 +257,6 @@ a {
 
 	&:after{
 		content: "Crew";
-		position: absolute;
-		top:-1.2rem;
-		left: 0.4rem;
-		color: palegoldenrod;
-		font-family: variables.$handwriting;
-		font-size: 1.5rem;
 	}
 
 }
@@ -339,5 +316,54 @@ a {
 		font-weight: bold;
 		text-align: center;
 		font-size: 1.4rem;
+	}
+}
+
+.spacedock{
+	grid-template-columns: 0.25fr 1fr 6.6fr 1fr 1.5fr;
+	margin-top: 2.5rem;
+	// display: none;
+	display: grid;
+	grid-auto-rows: auto;
+	padding: 0.5rem 0 2%;
+}
+
+.storage{
+	@include mixins.item-display;
+
+	grid-template-columns: repeat( auto-fit, minmax(4.9rem, 1fr) );
+	gap: 3.3%;
+	padding: 3.3%;
+
+	&__item{
+		height: 7rem;
+		width: 5rem;
+	}
+
+	&:after{
+		content: "Storage Bay";
+	}
+}
+
+.credits{
+	@include mixins.generic-display;
+	grid-column: 4/5;
+	padding-left: 15%;
+	margin: 0 15%;
+	
+
+	&:after{
+		content: "Credits";
+	}
+}
+
+.capacity{
+	@include mixins.generic-display;
+	grid-column: 5/6;
+	padding-left: 25%;
+	
+
+	&:after{
+		content: "Capacity";
 	}
 }
