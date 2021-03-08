@@ -98,8 +98,8 @@ a {
 }
 
 .game-display{
-	// background: url("../../src/img/game_mat.jpg");
-	background: url("../../src/img/dock.jpg");
+	background: url("../../src/img/game_mat.jpg");
+	// background: url("../../src/img/dock.jpg");
 	background-position: center;
 	background-size: cover;
 	padding-bottom: 10%;
@@ -155,9 +155,8 @@ a {
 	padding-top: 0.5rem;
 	
 	&_opponent{
-		grid-template-columns: 0.25fr 1fr 4fr 1fr 1.5fr;
+		grid-template-columns: 0.1fr 1fr 4fr 1fr 1.5fr;
 		margin-top: 2.5rem;
-		display: none;
 	}
 }
 
@@ -322,8 +321,8 @@ a {
 .spacedock{
 	grid-template-columns: 0.25fr 1fr 6.6fr 1fr 1.5fr;
 	margin-top: 2.5rem;
-	// display: none;
-	display: grid;
+	display: none;
+	// display: grid;
 	grid-auto-rows: auto;
 	padding: 0.5rem 0 2%;
 }

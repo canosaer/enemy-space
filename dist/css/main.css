@@ -223,7 +223,7 @@ a {
 }
 
 .game-display {
-  background: url("../../src/img/dock.jpg");
+  background: url("../../src/img/game_mat.jpg");
   background-position: center;
   background-size: cover;
   padding-bottom: 10%;
@@ -277,10 +277,9 @@ a {
   padding-top: 0.5rem;
 }
 .player-mat_opponent {
-  -ms-grid-columns: 0.25fr 1fr 4fr 1fr 1.5fr;
-  grid-template-columns: 0.25fr 1fr 4fr 1fr 1.5fr;
+  -ms-grid-columns: 0.1fr 1fr 4fr 1fr 1.5fr;
+  grid-template-columns: 0.1fr 1fr 4fr 1fr 1.5fr;
   margin-top: 2.5rem;
-  display: none;
 }
 
 .ship-display {
@@ -479,8 +478,7 @@ a {
   -ms-grid-columns: 0.25fr 1fr 6.6fr 1fr 1.5fr;
   grid-template-columns: 0.25fr 1fr 6.6fr 1fr 1.5fr;
   margin-top: 2.5rem;
-  display: -ms-grid;
-  display: grid;
+  display: none;
   grid-auto-rows: auto;
   padding: 0.5rem 0 2%;
 }
