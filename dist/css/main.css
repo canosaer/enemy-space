@@ -230,7 +230,7 @@ a {
   background: url("../../src/img/game_mat.jpg");
   background-position: center;
   background-size: cover;
-  padding-bottom: 25%;
+  padding-bottom: 33.3%;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr;
@@ -456,6 +456,24 @@ a {
   color: palegoldenrod;
   font-family: "Yellowtail", cursive;
   font-size: 1.5rem;
+}
+
+.last-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.complete {
+  background: palevioletred;
+  color: white;
+  text-align: center;
+  padding: 0.5rem 0.25rem;
+  font-size: 0.7rem;
+  margin: -0.5rem 0 0.75rem 7.5%;
+  max-width: 4.1rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  text-transform: uppercase;
 }
 
 .xp {
