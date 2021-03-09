@@ -1,0 +1,2 @@
+class MessageHandler{constructor(){this.mainMessageEl=document.querySelector(".message-bar__message_main"),this.secondaryMessageEl=document.querySelector(".message-bar__message_secondary"),this.setupListener()}setupListener(){document.addEventListener("message",this.handleMessage)}handleMessage=e=>{const{message:s}=e.detail;this.secondaryMessageEl.textContent=this.mainMessageEl.textContent,this.mainMessageEl.textContent=s}}
+//# sourceMappingURL=message-handler.js.map

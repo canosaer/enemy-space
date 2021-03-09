@@ -1,0 +1,2 @@
+class Game{constructor(){this.referenceDeck=new Deck,this.gameDeck=new Deck,this.setupListeners(),new MessageHandler}setupListeners(){}logMessage(e){let s=new CustomEvent("message",{detail:{message:e}});document.dispatchEvent(s)}startGame=()=>{console.log("The game has begun!")};toggleInstructions(){console.log("instructions")}addCardToBoard(e,s){const t=document.querySelector(".deck"),n=e.render(s);t.appendChild(n)}continueGame(){}}
+//# sourceMappingURL=game.js.map

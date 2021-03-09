@@ -46,8 +46,8 @@ a {
 	background-position: center;
 	background-size: cover;
 	padding: 0 5% 50% 0;
-	// display: grid;
-	display: none;
+	display: grid;
+	// display: none;
 	grid-template-columns: 1fr;
 	grid-auto-rows: auto;
 
@@ -86,6 +86,10 @@ a {
 		&:hover{
 			color: slategrey;
 		}
+
+		&_continue{
+			display: none;
+		}
 	}
 
 	&__footer{
@@ -102,9 +106,8 @@ a {
 	// background: url("../../src/img/dock.jpg");
 	background-position: center;
 	background-size: cover;
-	padding-bottom: 10%;
+	padding-bottom: 25%;
 	display: grid;
-	// display: none;
 	grid-template-columns: 1fr;
 	grid-auto-rows: auto;
 
@@ -126,6 +129,14 @@ a {
 		cursor: pointer;
 		margin-bottom: 0.5rem;
 	}
+
+	&__footer{
+		grid-column: 1/-1;
+		position: absolute;
+		color: lightgray;
+		bottom: 1%;
+		right: 5%;
+	}
 }
 
 .message-bar{
@@ -136,12 +147,12 @@ a {
 		text-align:center;
 		margin-bottom: 0.25rem;
 
-		&_current{
+		&_main{
 			height: 1rem;
 			color:white;
 		}
 
-		&_last{
+		&_secondary{
 			height: 1rem;
 			color:gray;
 		}
@@ -155,7 +166,7 @@ a {
 	padding-top: 0.5rem;
 	
 	&_opponent{
-		grid-template-columns: 0.1fr 1fr 4fr 1fr 1.5fr;
+		grid-template-columns: 0.2fr 1fr 4fr 1fr 1.5fr;
 		margin-top: 2.5rem;
 	}
 }
@@ -245,10 +256,10 @@ a {
 		grid-column: 1/2;
 		text-transform: uppercase;
 		margin-bottom: 0.5rem;
+		grid-column: 2/3;
 	}
 
 	&__pilot-level, &__gunner-level, &__engineer-level{
-		grid-column:2/3;
 		color: palevioletred;
 		font-weight: bold;
 		font-size: 0.8rem;
@@ -365,4 +376,10 @@ a {
 	&:after{
 		content: "Capacity";
 	}
+}
+
+// ----- UTILITY -----
+
+.hidden{
+	display: none;
 }

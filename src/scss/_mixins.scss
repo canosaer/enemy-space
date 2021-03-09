@@ -45,18 +45,19 @@
 }
 
 @mixin generic-display{
-  display: flex;
-	flex-direction: column;
+  display: grid;
+	grid-template-columns: 0.1fr 1fr 0.1fr;
+  grid-auto-rows: 1.5rem;
 	color: white;
 	grid-column: 4/5;
 	position: relative;
-	padding: 1rem 0.5rem 0rem;
+	padding-top: 1rem;
 	
 
 	&:after{
 		position: absolute;
-		top:-1.2rem;
-		left: 0.4rem;
+		top:-0.85rem;
+		left: 7%;
 		color: palegoldenrod;
 		font-family: variables.$handwriting;
 		font-size: 1.5rem;

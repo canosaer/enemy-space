@@ -1,0 +1,2 @@
+class Component{title=null;size=null;cost=null;type=null;attack=null;counter=null;disabled=!1;constructor(t,n){this.suit=t,this.rank=n}render(t){const n=document.createElement("div");n.classList.add("card");const s=document.createElement("span");s.classList.add("suit"),s.classList.add(this.suit),s.innerHTML=this.suit;const e=document.createElement("span");if(e.classList.add("rank"),e.innerHTML=this.rank,n.appendChild(e),n.appendChild(s),"down"===t){const t=document.createElement("div");t.classList.add("card-back"),n.appendChild(t)}return n}}
+//# sourceMappingURL=card.js.map

@@ -177,7 +177,8 @@ a {
   background-position: center;
   background-size: cover;
   padding: 0 5% 50% 0;
-  display: none;
+  display: -ms-grid;
+  display: grid;
   -ms-grid-columns: 1fr;
   grid-template-columns: 1fr;
   grid-auto-rows: auto;
@@ -214,6 +215,9 @@ a {
 .title-screen__item:hover {
   color: slategrey;
 }
+.title-screen__item_continue {
+  display: none;
+}
 .title-screen__footer {
   grid-column: 1/-1;
   position: absolute;
@@ -226,7 +230,7 @@ a {
   background: url("../../src/img/game_mat.jpg");
   background-position: center;
   background-size: cover;
-  padding-bottom: 10%;
+  padding-bottom: 25%;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr;
@@ -250,6 +254,13 @@ a {
   cursor: pointer;
   margin-bottom: 0.5rem;
 }
+.game-display__footer {
+  grid-column: 1/-1;
+  position: absolute;
+  color: lightgray;
+  bottom: 1%;
+  right: 5%;
+}
 
 .message-bar {
   width: 100%;
@@ -259,11 +270,11 @@ a {
   text-align: center;
   margin-bottom: 0.25rem;
 }
-.message-bar__message_current {
+.message-bar__message_main {
   height: 1rem;
   color: white;
 }
-.message-bar__message_last {
+.message-bar__message_secondary {
   height: 1rem;
   color: gray;
 }
@@ -277,8 +288,8 @@ a {
   padding-top: 0.5rem;
 }
 .player-mat_opponent {
-  -ms-grid-columns: 0.1fr 1fr 4fr 1fr 1.5fr;
-  grid-template-columns: 0.1fr 1fr 4fr 1fr 1.5fr;
+  -ms-grid-columns: 0.2fr 1fr 4fr 1fr 1.5fr;
+  grid-template-columns: 0.2fr 1fr 4fr 1fr 1.5fr;
   margin-top: 2.5rem;
 }
 
@@ -378,20 +389,23 @@ a {
 }
 
 .crew {
-  display: flex;
-  flex-direction: column;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 0.1fr 1fr 0.1fr;
+  grid-template-columns: 0.1fr 1fr 0.1fr;
+  grid-auto-rows: 1.5rem;
   color: white;
   -ms-grid-column: 4;
   -ms-grid-column-span: 1;
   grid-column: 4/5;
   position: relative;
-  padding: 1rem 0.5rem 0rem;
+  padding-top: 1rem;
   grid-column: 5/6;
 }
 .crew:after {
   position: absolute;
-  top: -1.2rem;
-  left: 0.4rem;
+  top: -0.85rem;
+  left: 7%;
   color: palegoldenrod;
   font-family: "Yellowtail", cursive;
   font-size: 1.5rem;
@@ -403,11 +417,9 @@ a {
   grid-column: 1/2;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
+  grid-column: 2/3;
 }
 .crew__pilot-level, .crew__gunner-level, .crew__engineer-level {
-  -ms-grid-column: 2;
-  -ms-grid-column-span: 1;
-  grid-column: 2/3;
   color: palevioletred;
   font-weight: bold;
   font-size: 0.8rem;
@@ -520,22 +532,25 @@ a {
 }
 
 .credits {
-  display: flex;
-  flex-direction: column;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 0.1fr 1fr 0.1fr;
+  grid-template-columns: 0.1fr 1fr 0.1fr;
+  grid-auto-rows: 1.5rem;
   color: white;
   -ms-grid-column: 4;
   -ms-grid-column-span: 1;
   grid-column: 4/5;
   position: relative;
-  padding: 1rem 0.5rem 0rem;
+  padding-top: 1rem;
   grid-column: 4/5;
   padding-left: 15%;
   margin: 0 15%;
 }
 .credits:after {
   position: absolute;
-  top: -1.2rem;
-  left: 0.4rem;
+  top: -0.85rem;
+  left: 7%;
   color: palegoldenrod;
   font-family: "Yellowtail", cursive;
   font-size: 1.5rem;
@@ -545,26 +560,33 @@ a {
 }
 
 .capacity {
-  display: flex;
-  flex-direction: column;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 0.1fr 1fr 0.1fr;
+  grid-template-columns: 0.1fr 1fr 0.1fr;
+  grid-auto-rows: 1.5rem;
   color: white;
   -ms-grid-column: 4;
   -ms-grid-column-span: 1;
   grid-column: 4/5;
   position: relative;
-  padding: 1rem 0.5rem 0rem;
+  padding-top: 1rem;
   grid-column: 5/6;
   padding-left: 25%;
 }
 .capacity:after {
   position: absolute;
-  top: -1.2rem;
-  left: 0.4rem;
+  top: -0.85rem;
+  left: 7%;
   color: palegoldenrod;
   font-family: "Yellowtail", cursive;
   font-size: 1.5rem;
 }
 .capacity:after {
   content: "Capacity";
+}
+
+.hidden {
+  display: none;
 }
 /*# sourceMappingURL=main.css.map */
