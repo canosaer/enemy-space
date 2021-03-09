@@ -1,3 +1,3 @@
-// const newGame = new Game()
-
-const titleScreen = new TitleScreen()
+var crewContainer = document.querySelector(`.crew_human`)
+var crewElements = crewContainer.querySelectorAll(`p`)
+var titleScreen = new TitleScreen()

@@ -45,7 +45,7 @@ a {
 	background: url("../../src/img/title_image.jpg");
 	background-position: center;
 	background-size: cover;
-	padding: 0 5% 50% 0;
+	padding: 0 5% 60% 0;
 	display: grid;
 	// display: none;
 	grid-template-columns: 1fr;
@@ -106,7 +106,7 @@ a {
 	// background: url("../../src/img/dock.jpg");
 	background-position: center;
 	background-size: cover;
-	padding-bottom: 33.3%;
+	padding-bottom: 35%;
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-auto-rows: auto;
@@ -142,10 +142,13 @@ a {
 .message-bar{
 	width: 100%;
 	margin-bottom: 0.75rem;
+	padding: 0 2%;
+	line-height: 1.2;
 
 	&__message{
 		text-align:center;
 		margin-bottom: 0.25rem;
+		font-size: 0.8rem;
 
 		&_main{
 			height: 1rem;
@@ -286,7 +289,6 @@ a {
 		font-size: 0.75rem;
 		margin: 0.25rem 0;
 		border-radius: 9999px;
-		cursor: pointer;
 	}
 
 	&:after{
@@ -310,12 +312,12 @@ a {
 	background: palevioletred;
 	color: white;
 	text-align: center;
+	line-height: 1.1;
 	padding: 0.5rem 0.25rem;
 	font-size: 0.7rem;
 	margin: -0.5rem 0 0.75rem 7.5%;
 	max-width: 4.1rem;
 	border-radius: 9999px;
-	cursor: pointer;
 	text-transform: uppercase;
 }
 
@@ -400,4 +402,12 @@ a {
 
 .hidden{
 	display: none;
+}
+
+.clickable{
+	cursor: pointer;
+}
+
+.red{
+	color: palevioletred;
 }

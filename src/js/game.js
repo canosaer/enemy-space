@@ -2,16 +2,61 @@ class Game {
      constructor(){
         this.referenceDeck = new Deck()
         this.gameDeck = new Deck()
+        this.player = new Player()
 
         this.setupListeners()
-
         new MessageHandler()
+        this.setupCrew()
     }
 
     setupListeners(){
-        // document.querySelector(`.title-screen__item_new`).addEventListener(`click`, this.startGame)
-        // document.querySelector(`.title-screen__item_instructions`).addEventListener(`click`, this.toggleInstructions)
-        // document.querySelector(`.title-screen__item_continue`).addEventListener(`click`, this.continueGame)
+        document.querySelector(`.game-display__title`).addEventListener(`click`, this.returnToTitle)
+        document.querySelector(`.game-display__subtitle`).addEventListener(`click`, this.returnToTitle)
+        document.addEventListener(`removeCrewListeners`, this.toggleCrewListeners)
+    }
+
+    returnToTitle() {
+        localStorage.setItem('dm21GameState', `paused`)
+        document.querySelector(`.title-screen`).classList.remove(`hidden`)
+        document.querySelector(`.game-display`).classList.add(`hidden`)
+    }
+
+    setupCrew = () => {
+        this.logMessage(`Select Crew: Under "Crew," click on your Pilot, Gunner, or Engineer to add a +2 bonus to that crew member.`)
+        sessionStorage.setItem('dm21IncreaseLevel', `2`)
+        sessionStorage.setItem('dm21GamePhase', `crewSetup`)
+        this.toggleCrewListeners()
+    }
+
+    toggleCrewListeners = () => {
+        crewElements.forEach(element => {
+            element.classList.toggle(`clickable`)
+        });
+        if(crewElements[0].classList.contains(`clickable`)){
+            crewContainer.querySelector(`.crew__pilot`).addEventListener(`click`, this.increasePilot )
+            crewContainer.querySelector(`.crew__gunner`).addEventListener(`click`, this.increaseGunner )
+            crewContainer.querySelector(`.crew__engineer`).addEventListener(`click`, this.increaseEngineer )
+        }
+        else{
+            crewContainer.querySelector(`.crew__pilot`).removeEventListener(`click`, this.increasePilot )
+            crewContainer.querySelector(`.crew__gunner`).removeEventListener(`click`, this.increaseGunner )
+            crewContainer.querySelector(`.crew__engineer`).removeEventListener(`click`, this.increaseEngineer )
+        }
+    }
+
+    increasePilot = () => {
+        let evt = new CustomEvent(`increaseCrew`, {detail: { crew: `pilot`}})
+        document.dispatchEvent(evt)
+    }
+
+    increaseGunner = () => {
+        let evt = new CustomEvent(`increaseCrew`, {detail: { crew: `gunner`}})
+        document.dispatchEvent(evt)
+    }
+
+    increaseEngineer = () => {
+        let evt = new CustomEvent(`increaseCrew`, {detail: { crew: `engineer`}})
+        document.dispatchEvent(evt)
     }
 
     logMessage(message) {
@@ -23,17 +68,9 @@ class Game {
         console.log(`The game has begun!`)
     }
 
-    toggleInstructions() {
-        console.log(`instructions`)
-    }
-
     addCardToBoard(card, facing) {
         const deckEl = document.querySelector(`.deck`)
         const cardEl = card.render(facing)
         deckEl.appendChild(cardEl)
-    }
-
-    continueGame() {
-
     }
 }

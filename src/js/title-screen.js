@@ -24,6 +24,7 @@ class TitleScreen {
         document.querySelector(`.title-screen`).classList.add(`hidden`)
         document.querySelector(`.game-display`).classList.remove(`hidden`)
         localStorage.setItem('dm21GameState', `inProg`)
+        this.game = new Game()
     }
 
     toggleInstructions() {
@@ -33,5 +34,6 @@ class TitleScreen {
     continueGame() {
         document.querySelector(`.title-screen`).classList.add(`hidden`)
         document.querySelector(`.game-display`).classList.remove(`hidden`)
+        this.game = new Game()
     }
 }
