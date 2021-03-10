@@ -27,10 +27,6 @@
 	grid-auto-rows: auto;
 	position: relative;
 
-	&__item{
-		cursor: pointer;
-	}
-
 	&:after{
 		position: absolute;
 		top:-1.2rem;

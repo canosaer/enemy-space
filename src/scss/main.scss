@@ -104,7 +104,7 @@ a {
 .game-display{
 	background: url("../../src/img/game_mat.jpg");
 	// background: url("../../src/img/dock.jpg");
-	background-position: center;
+	background-position: top;
 	background-size: cover;
 	padding-bottom: 55%;
 	display: grid;
@@ -421,4 +421,9 @@ a {
 
 .red{
 	color: palevioletred;
+}
+
+.focus{
+	border: 2px solid palegoldenrod;
+	border-radius: 5%;
 }

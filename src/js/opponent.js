@@ -38,7 +38,7 @@ class Opponent {
             this.crewElements.pilot.textContent = this.bonus.pilot
             this.crewElements.gunner.textContent = this.bonus.gunner
             this.crewElements.engineer.textContent = this.bonus.engineer
-            this.name = `Blob Figher`
+            this.name = `Blob Fighter`
             this.nameElement.textContent = this.name
 
         }

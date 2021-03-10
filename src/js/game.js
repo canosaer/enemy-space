@@ -98,6 +98,29 @@ class Game {
     startLevel = () => {
         document.querySelector(`.player-mat_opponent`).classList.toggle(`hidden`)
         this.logMessage(`Combat begins!`)
+        this.togglePlayerComponentListeners()
+    }
+
+    togglePlayerComponentListeners = () => {
+        this.componentDisplay = document.querySelector(`.components_human`)
+        this.components = this.componentDisplay.querySelectorAll(`.components__item`)
+        this.components.forEach(component => {
+            component.classList.toggle(`clickable`)
+            component.addEventListener(`click`, this.handlePlayerComponentClick)
+        })
+    }
+
+    handlePlayerComponentClick = (evt) => {
+        evt.target.classList.toggle(`focus`)
+        let targetBackground = evt.target.style.background.toString()
+        if(evt.target.classList.contains(`focus`)){
+            for(let i=0; i<this.player.components.installed.length;i++){
+                if(targetBackground.indexOf(this.player.components.installed[i].image)){
+                    ///HERE
+                }
+            }
+        }
+        
     }
 
     saveGame() {

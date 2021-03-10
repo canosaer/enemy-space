@@ -228,7 +228,7 @@ a {
 
 .game-display {
   background: url("../../src/img/game_mat.jpg");
-  background-position: center;
+  background-position: top;
   background-size: cover;
   padding-bottom: 55%;
   display: -ms-grid;
@@ -351,9 +351,6 @@ a {
   gap: 3.3%;
   padding: 3.3%;
   place-items: center center;
-}
-.components__item {
-  cursor: pointer;
 }
 .components:after {
   position: absolute;
@@ -551,9 +548,6 @@ a {
   gap: 3.3%;
   padding: 3.3%;
 }
-.storage__item {
-  cursor: pointer;
-}
 .storage:after {
   position: absolute;
   top: -1.2rem;
@@ -635,5 +629,10 @@ a {
 
 .red {
   color: palevioletred;
+}
+
+.focus {
+  border: 2px solid palegoldenrod;
+  border-radius: 5%;
 }
 /*# sourceMappingURL=main.css.map */
