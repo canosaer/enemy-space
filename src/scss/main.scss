@@ -218,10 +218,16 @@ a {
 	grid-template-columns: repeat( auto-fit, minmax(2.9rem, 1fr) );
 	gap: 3.3%;
 	padding: 3.3%;
+	place-items: center center;
 
 	&__item{
 		height: 4.5rem;
 		width: 3rem;
+
+		&:hover{
+			transform: scale(2.75);
+			z-index: 1;
+		}
 	}
 
 	&:after{
@@ -238,6 +244,11 @@ a {
 	font-size: 0.75rem;
 	grid-column: 4/5;
 	position: relative;
+
+	&__item{
+		margin: 0.25rem;
+		line-height: 1.5;
+	}
 
 	&:after{
 		content: "Consumables";

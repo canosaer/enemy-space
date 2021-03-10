@@ -350,11 +350,9 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(2.9rem, 1fr));
   gap: 3.3%;
   padding: 3.3%;
+  place-items: center center;
 }
 .components__item {
-  background: url("../../src/img/components/auto_cannon.png");
-  background-size: cover;
-  background-position: center;
   cursor: pointer;
 }
 .components:after {
@@ -368,6 +366,11 @@ a {
 .components__item {
   height: 4.5rem;
   width: 3rem;
+}
+.components__item:hover {
+  -webkit-transform: scale(2.75);
+          transform: scale(2.75);
+  z-index: 1;
 }
 .components:after {
   content: "Components";
@@ -386,6 +389,10 @@ a {
   -ms-grid-column-span: 1;
   grid-column: 4/5;
   position: relative;
+}
+.consumables__item {
+  margin: 0.25rem;
+  line-height: 1.5;
 }
 .consumables:after {
   content: "Consumables";
@@ -545,9 +552,6 @@ a {
   padding: 3.3%;
 }
 .storage__item {
-  background: url("../../src/img/components/auto_cannon.png");
-  background-size: cover;
-  background-position: center;
   cursor: pointer;
 }
 .storage:after {

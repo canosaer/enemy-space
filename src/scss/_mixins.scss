@@ -28,9 +28,6 @@
 	position: relative;
 
 	&__item{
-		background:url("../../src/img/components/auto_cannon.png");
-		background-size: cover;
-		background-position: center;
 		cursor: pointer;
 	}
 
@@ -45,9 +42,9 @@
 }
 
 @mixin generic-display{
-  display: grid;
+  	display: grid;
 	grid-template-columns: 0.1fr 1fr 0.1fr;
-  grid-auto-rows: 1.5rem;
+  	grid-auto-rows: 1.5rem;
 	color: white;
 	grid-column: 4/5;
 	position: relative;

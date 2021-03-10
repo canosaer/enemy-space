@@ -3,9 +3,12 @@ class Game {
         this.referenceDeck = new Deck()
         this.gameDeck = new Deck()
         this.player = new Player()
+            
 
         this.setupListeners()
         new MessageHandler()
+
+        this.setupShip()
         this.setupCrew()
     }
 
@@ -13,6 +16,7 @@ class Game {
         document.querySelector(`.game-display__title`).addEventListener(`click`, this.returnToTitle)
         document.querySelector(`.game-display__subtitle`).addEventListener(`click`, this.returnToTitle)
         document.addEventListener(`removeCrewListeners`, this.toggleCrewListeners)
+        document.addEventListener(`advancePhase`, this.advancePhase)
     }
 
     returnToTitle() {
@@ -21,11 +25,30 @@ class Game {
         document.querySelector(`.game-display`).classList.add(`hidden`)
     }
 
+    setupShip = () => {
+        this.player.components.installed = [
+            this.referenceDeck.cards[5],
+            this.referenceDeck.cards[6],
+            this.referenceDeck.cards[9],
+            this.referenceDeck.cards[1]
+        ]
+        let evt = new CustomEvent(`renderInstalledComponents`)
+        document.dispatchEvent(evt)   
+    }
+
     setupCrew = () => {
         this.logMessage(`Select Crew: Under "Crew," click on your Pilot, Gunner, or Engineer to add a +2 bonus to that crew member.`)
         sessionStorage.setItem('dm21IncreaseLevel', `2`)
         sessionStorage.setItem('dm21GamePhase', `crewSetup`)
         this.toggleCrewListeners()
+    }
+
+    advancePhase = (evt) => {
+        let gamePhase = sessionStorage.getItem('dm21GamePhase')
+        if(gamePhase === `crewSetup`){
+            sessionStorage.setItem('dm21GamePhase', `playerTurn`)
+            this.playerTurn()
+        }
     }
 
     toggleCrewListeners = () => {
@@ -72,5 +95,33 @@ class Game {
         const deckEl = document.querySelector(`.deck`)
         const cardEl = card.render(facing)
         deckEl.appendChild(cardEl)
+    }
+
+    saveGame() {
+        localStorage.setItem(`dm21Save`, 
+        JSON.stringify(
+            {
+                player: this.player,
+                gameDeck: this.gameDeck,
+            }
+        ))
+    }
+
+    loadGame() {   
+        try {
+            const state = JSON.parse(localStorage.getItem(`dm21Save`))
+            if (state && state.gameDeck){
+                this.gameDeck = Deck().restore(state.gameDeck.cards)
+                this.player = Player().restore(state.player.bonus, state.player.crewElements, state.player.components, state.player.repeat)
+
+                return true
+            }
+
+           
+        } catch (err) {
+            console.error(`no game state`)
+        }
+
+        return false
     }
 }

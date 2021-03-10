@@ -1,57 +1,67 @@
 class Player {
     constructor() {
-        this.pilotBonus = 0
-        this.gunnerBonus = 0
-        this.engineerBonus = 0
-        this.installedComponents = []
-        this.storedComponents = []
+
+        this.bonus = {
+            pilot: 0,
+            gunner: 0,
+            engineer: 0
+        }
+
+        this.components = {
+            installed: [],
+            stored: []
+        }
+
         this.repeat = false
 
-        this.pilotEl = document.querySelector(`.crew__pilot-level_human`)
-        this.gunnerEl = document.querySelector(`.crew__gunner-level_human`)
-        this.engineerEl = document.querySelector(`.crew__engineer-level_human`)
+        this.crewElements = {
+            pilot: document.querySelector(`.crew__pilot-level_human`),
+            gunner: document.querySelector(`.crew__gunner-level_human`),
+            engineer: document.querySelector(`.crew__engineer-level_human`)
+        }
 
-        this.pilotEl.textContent = this.pilotBonus
-        this.gunnerEl.textContent = this.gunnerBonus
-        this.engineerEl.textContent = this.engineerBonus
+        this.crewElements.pilot.textContent = this.bonus.pilot
+        this.crewElements.gunner.textContent = this.bonus.gunner
+        this.crewElements.engineer.textContent = this.bonus.engineer
 
         this.setupListeners()
     }
 
     setupListeners() {
         document.addEventListener(`increaseCrew`, this.increaseCrew)
+        document.addEventListener(`renderInstalledComponents`, this.renderInstalledComponents)
     }
 
     increaseCrew = (evt) => {
         const { crew } = evt.detail
         let value = parseInt(sessionStorage.getItem('dm21IncreaseLevel'))
         if(crew === `pilot`){
-            if(sessionStorage.getItem(`dm21GamePhase`) === `crewSetup` && this.pilotBonus > 1){
+            if(sessionStorage.getItem(`dm21GamePhase`) === `crewSetup` && this.bonus.pilot > 1){
                 this.repeat = true
             }
             else{
-                this.pilotBonus = this.pilotBonus + value
-                this.pilotEl.textContent = this.pilotBonus
+                this.bonus.pilot = this.bonus.pilot + value
+                this.crewElements.pilot.textContent = this.bonus.pilot
                 this.repeat = false
             }
         }
         else if(crew === `gunner`){
-            if(sessionStorage.getItem(`dm21GamePhase`) === `crewSetup` && this.gunnerBonus > 1){
+            if(sessionStorage.getItem(`dm21GamePhase`) === `crewSetup` && this.bonus.gunner > 1){
                 this.repeat = true
             }
             else{
-                this.gunnerBonus = this.gunnerBonus + value
-                this.gunnerEl.textContent = this.gunnerBonus
+                this.bonus.gunner = this.bonus.gunner + value
+                this.crewElements.gunner.textContent = this.bonus.gunner
                 this.repeat = false
             }
         }
         else if(crew === `engineer`){
-            if(sessionStorage.getItem(`dm21GamePhase`) === `crewSetup` && this.engineerBonus > 1){
+            if(sessionStorage.getItem(`dm21GamePhase`) === `crewSetup` && this.bonus.engineer > 1){
                 this.repeat = true
             }
             else{
-                this.engineerBonus = this.engineerBonus + value
-                this.engineerEl.textContent = this.engineerBonus
+                this.bonus.engineer = this.bonus.engineer + value
+                this.crewElements.engineer.textContent = this.bonus.engineer
                 this.repeat = false
             }
         }
@@ -67,6 +77,7 @@ class Player {
             message = message.toUpperCase();
             this.logMessage(message)
             this.removeCrewListeners()
+            this.advancePhase()
         }
         
     }
@@ -76,24 +87,32 @@ class Player {
         document.dispatchEvent(evt)
     }
 
+    advancePhase = () => {
+        let evt = new CustomEvent(`advancePhase`)
+        document.dispatchEvent(evt)
+    }
+
     logMessage(message) {
         let evt = new CustomEvent(`message`, {detail: { message: message }})
         document.dispatchEvent(evt)
     }
 
-    create() {
-        
-    }
-
-    shuffle() {
-
-    }
-
-    reset() {
-        
-    }
-
-    reveal(numCards) {
-                
+    renderInstalledComponents = () => {
+        this.components.installed.forEach(component => {
+            if(!component.counter){
+                let componentCard = document.createElement(`li`)
+                componentCard.classList.add(`components__item`)
+                componentCard.style.background = `url("${component.image}")`
+                componentCard.style.backgroundPosition = `center`
+                componentCard.style.backgroundSize = `cover`
+                document.querySelector(`.components_human`).appendChild(componentCard)
+            }
+            else{
+                let consumableItem = document.createElement(`li`)
+                consumableItem.classList.add(`consumables__item`)
+                consumableItem.textContent = `${component.title}: ${component.counter}`
+                document.querySelector(`.consumables_human`).appendChild(consumableItem)
+            }
+        });
     }
 }
