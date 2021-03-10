@@ -9,6 +9,7 @@ class Game {
         new MessageHandler()
 
         this.setupShip()
+        this.setupOpponent()
         this.setupCrew()
     }
 
@@ -26,6 +27,7 @@ class Game {
     }
 
     setupShip = () => {
+        this.level = 1
         this.player.components.installed = [
             this.referenceDeck.cards[5],
             this.referenceDeck.cards[6],
@@ -33,7 +35,13 @@ class Game {
             this.referenceDeck.cards[1]
         ]
         let evt = new CustomEvent(`renderInstalledComponents`)
-        document.dispatchEvent(evt)   
+        document.dispatchEvent(evt)
+    }
+
+    setupOpponent = () => {
+        this.opponent = new Opponent()
+        let evt = new CustomEvent(`setupOpponent`, {detail: { level: this.level, referenceDeck: this.referenceDeck }})
+        document.dispatchEvent(evt)
     }
 
     setupCrew = () => {
@@ -46,8 +54,8 @@ class Game {
     advancePhase = (evt) => {
         let gamePhase = sessionStorage.getItem('dm21GamePhase')
         if(gamePhase === `crewSetup`){
-            sessionStorage.setItem('dm21GamePhase', `playerTurn`)
-            this.playerTurn()
+            sessionStorage.setItem('dm21GamePhase', `combat`)
+            this.startLevel()
         }
     }
 
@@ -87,14 +95,9 @@ class Game {
         document.dispatchEvent(evt)
     }
 
-    startGame = () => {
-        console.log(`The game has begun!`)
-    }
-
-    addCardToBoard(card, facing) {
-        const deckEl = document.querySelector(`.deck`)
-        const cardEl = card.render(facing)
-        deckEl.appendChild(cardEl)
+    startLevel = () => {
+        document.querySelector(`.player-mat_opponent`).classList.toggle(`hidden`)
+        this.logMessage(`Combat begins!`)
     }
 
     saveGame() {

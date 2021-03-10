@@ -230,7 +230,7 @@ a {
   background: url("../../src/img/game_mat.jpg");
   background-position: center;
   background-size: cover;
-  padding-bottom: 35%;
+  padding-bottom: 55%;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr;
