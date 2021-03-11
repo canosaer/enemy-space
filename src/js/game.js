@@ -23,6 +23,7 @@ class Game {
         document.querySelector(`.game-display__subtitle`).addEventListener(`click`, this.returnToTitle)
         document.addEventListener(`removeCrewListeners`, this.toggleCrewListeners)
         document.addEventListener(`advancePhase`, this.advancePhase)
+        document.addEventListener(`togglePlayerComponents`, this.togglePlayerComponentListeners)
         this.missileNumbers.forEach(button => {
             button.addEventListener(`click`, this.queueMissiles)
         });
@@ -110,6 +111,7 @@ class Game {
         document.querySelector(`.player-mat_opponent`).classList.toggle(`hidden`)
         this.logMessage(`Combat begins!`)
         this.togglePlayerComponentListeners()
+        this.toggleSpecialActionListeners()
     }
 
     togglePlayerComponentListeners = () => {
@@ -117,7 +119,26 @@ class Game {
         this.components = this.componentDisplay.querySelectorAll(`.components__item`)
         this.components.forEach(component => {
             component.classList.toggle(`clickable`)
-            component.addEventListener(`click`, this.handlePlayerComponentClick)
+            if(component.classList.contains(`clickable`)){
+                component.addEventListener(`click`, this.handlePlayerComponentClick)
+            }
+            else{
+                component.removeEventListener(`click`, this.handlePlayerComponentClick)
+            }
+        })
+    }
+
+    toggleSpecialActionListeners = () => {
+        this.specialActions = document.querySelectorAll(`.special-actions__button`)
+        this.specialActions.forEach(action => {
+            action.classList.toggle(`clickable`)
+            if(action.classList.contains(`clickable`)){
+                action.addEventListener(`click`, this.handleSpecialActionClick)
+            }
+            else{
+                action.removeEventListener(`click`, this.handleSpecialActionClick)
+            }
+            
         })
     }
 
@@ -128,6 +149,12 @@ class Game {
             }
         }
         return -1
+    }
+
+    handleSpecialActionClick = (evt) => {
+        if(evt.target.classList.contains(`special-actions__button_attack-run`)){
+            this.logMessage(`Select Weapon`)
+        }
     }
 
     handlePlayerComponentClick = (evt) => {
@@ -195,7 +222,6 @@ class Game {
     queueMissiles = (evt) => {
         this.missileDialog.querySelector(`.missile-dialog__number`).classList.toggle(`hidden`)
         this.missileDialog.classList.toggle(`hidden`)
-    
         let action = {
             log: `Fire ${evt.target.textContent} ${this.player.components.installed[this.activeMissileIndex].title}`,
             type: `attack`,
@@ -207,7 +233,19 @@ class Game {
         if(this.player.components.installed[this.activeMissileIndex].counter === 0){
             this.player.components.installed.splice(this.activeMissileIndex)
             this.player.components.installed.splice(this.findComponentIndex(`Missile Launcher`))
-        } 
+        }
+        this.completeAction()
+    }
+
+    completeAction = () => {
+        let logString = ``
+        for(let i=0;i<this.turnActions.length;i++){
+            logString += this.turnActions[i].log
+            if(this.turnActions.length > 1 && i != this.turnActions.length){
+                logString += `, `
+            }
+        }
+        this.logMessage(logString)
         this.player.renderInstalledComponents()
     }
 

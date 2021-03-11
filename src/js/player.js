@@ -101,6 +101,12 @@ class Player {
         let componentDisplay = document.querySelector(`.components_human`)
         let consumableDisplay = document.querySelector(`.consumables_human`)
         let oldRender = componentDisplay.querySelectorAll(`.components__item`)
+        let interactable = false
+
+        if(oldRender.length > 0 ){
+            if(oldRender[0].classList.contains(`clickable`)) interactable = true
+        }
+
         oldRender.forEach(element => {
             element.remove()
         });
@@ -124,5 +130,9 @@ class Player {
                 consumableDisplay.appendChild(consumableItem)
             }
         });
+        if(interactable){
+            let evt = new CustomEvent(`togglePlayerComponents`)
+            document.dispatchEvent(evt)
+        }
     }
 }
