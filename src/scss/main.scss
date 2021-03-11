@@ -219,6 +219,7 @@ a {
 	gap: 3.3%;
 	padding: 3.3%;
 	place-items: center center;
+	position: relative;
 
 	&__item{
 		height: 4.5rem;
@@ -235,6 +236,44 @@ a {
 	}
 }
 
+.missile-dialog{
+	position: absolute;
+	background: rgba(255, 255, 255, 0.85);
+	width: 90%;
+	text-align: center;
+	top: 1rem;
+	padding: 0.75rem;
+	z-index:2;
+
+	&__number-buttons, &__type-buttons{
+		display: flex;
+		width: 100%;
+		justify-content: space-around;
+		margin-top: 0.5rem;
+	}
+
+	&__number-button{
+		background: slategray;
+		color: white;
+		height: 2rem;
+		width: 2rem;
+		line-height: 2;
+		border-radius: 5%;
+		cursor: pointer;
+	}
+
+	&__missile-type{
+		background: slategray;
+		color: white;
+		height: 2rem;
+		width: 5rem;
+		line-height: 2;
+		border-radius: 5%;
+		cursor: pointer;
+	}
+
+}
+
 .consumables{
 	display: flex;
 	flex-direction: column;
@@ -244,6 +283,7 @@ a {
 	font-size: 0.75rem;
 	grid-column: 4/5;
 	position: relative;
+	padding-top: 0.5rem;
 
 	&__item{
 		margin: 0.25rem;

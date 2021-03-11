@@ -351,6 +351,7 @@ a {
   gap: 3.3%;
   padding: 3.3%;
   place-items: center center;
+  position: relative;
 }
 .components:after {
   position: absolute;
@@ -373,6 +374,42 @@ a {
   content: "Components";
 }
 
+.missile-dialog {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+  width: 90%;
+  text-align: center;
+  top: 1rem;
+  padding: 0.75rem;
+  z-index: 2;
+}
+.missile-dialog__number-buttons, .missile-dialog__type-buttons {
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  margin-top: 0.5rem;
+}
+.missile-dialog__number-button {
+  background: slategray;
+  color: white;
+  height: 2rem;
+  width: 2rem;
+  line-height: 2;
+  border-radius: 5%;
+  cursor: pointer;
+}
+.missile-dialog__missile-type {
+  background: slategray;
+  color: white;
+  height: 2rem;
+  width: 5rem;
+  line-height: 2;
+  border-radius: 5%;
+  cursor: pointer;
+}
+
 .consumables {
   display: -webkit-flex;
   display: flex;
@@ -386,6 +423,7 @@ a {
   -ms-grid-column-span: 1;
   grid-column: 4/5;
   position: relative;
+  padding-top: 0.5rem;
 }
 .consumables__item {
   margin: 0.25rem;

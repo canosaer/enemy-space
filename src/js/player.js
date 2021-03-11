@@ -98,6 +98,16 @@ class Player {
     }
 
     renderInstalledComponents = () => {
+        let componentDisplay = document.querySelector(`.components_human`)
+        let consumableDisplay = document.querySelector(`.consumables_human`)
+        let oldRender = componentDisplay.querySelectorAll(`.components__item`)
+        oldRender.forEach(element => {
+            element.remove()
+        });
+        oldRender = consumableDisplay.querySelectorAll(`.consumables__item`)
+        oldRender.forEach(element => {
+            element.remove()
+        });
         this.components.installed.forEach(component => {
             if(!component.counter){
                 let componentCard = document.createElement(`li`)
@@ -105,13 +115,13 @@ class Player {
                 componentCard.style.background = `url("${component.image}")`
                 componentCard.style.backgroundPosition = `center`
                 componentCard.style.backgroundSize = `cover`
-                document.querySelector(`.components_human`).appendChild(componentCard)
+                componentDisplay.appendChild(componentCard)
             }
             else{
                 let consumableItem = document.createElement(`li`)
                 consumableItem.classList.add(`consumables__item`)
                 consumableItem.textContent = `${component.title}: ${component.counter}`
-                document.querySelector(`.consumables_human`).appendChild(consumableItem)
+                consumableDisplay.appendChild(consumableItem)
             }
         });
     }

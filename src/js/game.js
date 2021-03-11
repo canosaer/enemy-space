@@ -3,7 +3,12 @@ class Game {
         this.referenceDeck = new Deck()
         this.gameDeck = new Deck()
         this.player = new Player()
-            
+        this.missileDialog = document.querySelector(`.missile-dialog`)
+        this.missileNumbers = document.querySelectorAll(`.missile-dialog__number-button`)
+        this.missileTypes = document.querySelectorAll(`.missile-dialog__missile-type`)
+        this.lightMissileIndex = 0
+        this.heavyMissileIndex = 0
+        this.turnActions = []
 
         this.setupListeners()
         new MessageHandler()
@@ -18,6 +23,12 @@ class Game {
         document.querySelector(`.game-display__subtitle`).addEventListener(`click`, this.returnToTitle)
         document.addEventListener(`removeCrewListeners`, this.toggleCrewListeners)
         document.addEventListener(`advancePhase`, this.advancePhase)
+        this.missileNumbers.forEach(button => {
+            button.addEventListener(`click`, this.queueMissiles)
+        });
+        this.missileTypes.forEach(button => {
+            button.addEventListener(`click`, this.selectMissileType)
+        });
     }
 
     returnToTitle() {
@@ -110,17 +121,94 @@ class Game {
         })
     }
 
+    findComponentIndex = (string) => {
+        for(let i=0; i<this.player.components.installed.length;i++){
+            if(this.player.components.installed[i].title === string){
+                return i
+            }
+        }
+        return -1
+    }
+
     handlePlayerComponentClick = (evt) => {
         evt.target.classList.toggle(`focus`)
         let targetBackground = evt.target.style.background.toString()
         if(evt.target.classList.contains(`focus`)){
             for(let i=0; i<this.player.components.installed.length;i++){
-                if(targetBackground.indexOf(this.player.components.installed[i].image)){
-                    ///HERE
+                if(targetBackground.indexOf(this.player.components.installed[i].image) != -1){
+                    this.selectedComponent = this.player.components.installed[i]
+                }
+            }
+            if(this.selectedComponent.title === `Missile Launcher`){
+                if(this.findComponentIndex(`Light Missiles`) != -1){
+                    this.lightMissileIndex = this.findComponentIndex(`Light Missiles`)
+                }
+                else if(this.findComponentIndex(`Heavy Missiles`) != -1){
+                    this.lightMissileIndex = this.findComponentIndex(`Heavy Missiles`)
+                }
+                // for(let i=0; i<this.player.components.installed.length;i++){
+                //     if(this.player.components.installed[i].title === `Light Missiles`){
+                //         this.lightMissileIndex = i
+                //     }
+                //     else if(this.player.components.installed[i].title === `Heavy Missiles`){
+                //         this.heavyMissileIndex = i
+                //     }
+                // }
+                this.missileDialog.classList.toggle(`hidden`)
+                if(this.heavyMissileIndex && this.lightMissileIndex){
+                    this.missileDialog.querySelector(`.missile-dialog__type`).classList.toggle(`hidden`)
+                }
+                else{
+                    if(this.lightMissileIndex){
+                        this.activeMissileIndex = this.lightMissileIndex
+                    } 
+                    else{
+                        this.activeMissileIndex = this.heavyMissileIndex
+                    }
+                    this.selectMissileNumber()
                 }
             }
         }
         
+    }
+
+    selectMissileType = (evt) => {
+        console.log(evt.target)
+    }
+
+    selectMissileNumber = () => {
+        this.missileDialog.querySelector(`.missile-dialog__number`).classList.toggle(`hidden`)
+        let activeMissileQuantity = this.player.components.installed[this.activeMissileIndex].counter
+        if(this.activeMissileIndex === this.lightMissileIndex){
+            if (activeMissileQuantity > 4) this.maxMissiles = 4
+            else this.maxMissiles = activeMissileQuantity
+        }
+        else{
+            if (activeMissileQUantity > 2) this.maxMissiles = 2
+            else this.maxMissiles = activeMissileQuantity
+        }
+        for(let i=0; i<this.maxMissiles; i++){
+            this.missileNumbers[i].classList.toggle(`hidden`)
+        }
+    }
+
+    queueMissiles = (evt) => {
+        this.missileDialog.querySelector(`.missile-dialog__number`).classList.toggle(`hidden`)
+        this.missileDialog.classList.toggle(`hidden`)
+    
+        let action = {
+            log: `Fire ${evt.target.textContent} ${this.player.components.installed[this.activeMissileIndex].title}`,
+            type: `attack`,
+            missiles: evt.target.textContent,
+            value: this.player.components.installed[this.activeMissileIndex].attack
+        }
+        this.turnActions.push(action)
+        this.player.components.installed[this.activeMissileIndex].counter = this.player.components.installed[this.activeMissileIndex].counter - evt.target.textContent
+        if(this.player.components.installed[this.activeMissileIndex].counter === 0){
+            this.player.components.installed.splice(this.activeMissileIndex)
+            this.player.components.installed.splice(this.findComponentIndex(`Missile Launcher`))
+        } 
+        this.player.renderInstalledComponents()
     }
 
     saveGame() {
