@@ -200,6 +200,15 @@ class Game {
         return -1
     }
 
+    findTurnIndex = (string) => {
+        for(let i=0; i<this.turnActions.length;i++){
+            if(this.turnActions[i].log.indexOf(string) != -1){
+                return i
+            }
+        }
+        return -1
+    }
+
     handleSpecialActionClick = (evt) => {
         if(evt.target.classList.contains(`special-actions__button_attack-run`)){
             this.attackRun = true
@@ -224,6 +233,7 @@ class Game {
         this.expose = false
         this.hack = false
         this.attackRun = false
+        this.countermeasures = false
         if(this.restoreComponents.length > 0){
             this.player.components.installed = this.restoreComponents
             if(this.activeMissileIndex != -1)
@@ -273,17 +283,25 @@ class Game {
                 }
             }
             else if(this.selectedComponent.title === `Auto Cannon`){
-                
-                
-                let action = {
-                    log: `Fire auto cannon`,
-                    type: `attack`,
-                    missiles: 0,
-                    value: 1
+                if(this.findTurnIndex(`Auto Cannon`) === -1){
+                    let action = {
+                        log: `Fire Auto Cannon`,
+                        type: `attack`,
+                        missiles: 0,
+                        value: 1
+                    }
+                    this.turnActions.push(action)
+                    this.completeAction()
                 }
-                this.turnActions.push(action)
-
-
+                else{
+                    this.logMessage(`${this.selectedComponent.title} already used.`)
+                }
+            }
+            else if(this.selectedComponent.title === `Countermeasures`){
+                this.countermeasures = true;
+                this.backupComponents()
+                this.player.components.installed.splice(this.findComponentIndex(`Countermeasures`), 1)
+                this.completeAction()
             }
         }
         evt.target.classList.toggle(`focus`)
@@ -295,11 +313,7 @@ class Game {
     }
 
     selectMissileNumber = () => {
-        if(this.restoreComponents.length === 0){
-            this.player.components.installed.forEach(component => {
-                this.restoreComponents.push(component)
-            });
-        }
+        this.backupComponents()
         this.missileDialog.querySelector(`.missile-dialog__number`).classList.toggle(`hidden`)
         this.activeMissileQuantity = this.player.components.installed[this.activeMissileIndex].counter
         if(this.activeMissileIndex === this.lightMissileIndex){
@@ -315,6 +329,14 @@ class Game {
         }
     }
 
+    backupComponents = () => {
+        if(this.restoreComponents.length === 0){
+            this.player.components.installed.forEach(component => {
+                this.restoreComponents.push(component)
+            });
+        }
+    }
+
     queueMissiles = (evt) => {
         this.missileDialog.querySelector(`.missile-dialog__number`).classList.toggle(`hidden`)
         this.missileDialog.classList.toggle(`hidden`)
@@ -327,19 +349,23 @@ class Game {
         this.turnActions.push(action)
         this.player.components.installed[this.activeMissileIndex].counter = this.player.components.installed[this.activeMissileIndex].counter - evt.target.textContent
         if(this.player.components.installed[this.activeMissileIndex].counter === 0){
-            this.player.components.installed.splice(this.activeMissileIndex)
+            this.player.components.installed.splice(this.activeMissileIndex, 1)
         }
         this.completeAction()
     }
 
     completeAction = () => {
         let logString = ``
+        if(this.countermeasures){
+            logString += `Deploy Countermeasures`
+            if(this.turnActions.length > 0 || this.expose || this.hack) logString += ` & `
+        }
         if(this.expose){
-            logString += `Outmaneuver and expose opponent`
+            logString += `Expose`
             if(this.turnActions.length > 0 || this.hack) logString += ` & `
         }
         if(this.hack){
-            logString += `Hack opponent's weapon systems`
+            logString += `Hack`
             if(this.turnActions.length > 0) logString += ` & `
         }
         if(this.attackRun){
@@ -349,7 +375,7 @@ class Game {
         if(this.turnActions.length>0){
             for(let i=0;i<this.turnActions.length;i++){
                 logString += this.turnActions[i].log
-                if(this.turnActions.length > 1 && i != this.turnActions.length){
+                if(this.turnActions.length > 1 && i != this.turnActions.length-1){
                     logString += ` & `
                 }
             }
