@@ -272,6 +272,19 @@ class Game {
                     }
                 }
             }
+            else if(this.selectedComponent.title === `Auto Cannon`){
+                
+                
+                let action = {
+                    log: `Fire auto cannon`,
+                    type: `attack`,
+                    missiles: 0,
+                    value: 1
+                }
+                this.turnActions.push(action)
+
+
+            }
         }
         evt.target.classList.toggle(`focus`)
         
