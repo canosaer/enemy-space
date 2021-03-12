@@ -280,6 +280,8 @@ a {
 .message-bar__message_secondary {
   height: 1rem;
   color: gray;
+  -webkit-filter: brightness(140%);
+          filter: brightness(140%);
 }
 
 .player-mat {

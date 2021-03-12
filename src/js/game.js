@@ -3,9 +3,15 @@ class Game {
         this.referenceDeck = new Deck()
         this.gameDeck = new Deck()
         this.player = new Player()
+
         this.missileDialog = document.querySelector(`.missile-dialog`)
         this.missileNumbers = document.querySelectorAll(`.missile-dialog__number-button`)
         this.missileTypes = document.querySelectorAll(`.missile-dialog__missile-type`)
+        this.specialActions = document.querySelectorAll(`.special-actions__button`)
+        this.componentDisplay = document.querySelector(`.components_human`)
+        this.completeTurn = document.querySelector(`.complete`)
+
+
         this.lightMissileIndex = 0
         this.heavyMissileIndex = 0
         this.turnActions = []
@@ -108,14 +114,16 @@ class Game {
     }
 
     startLevel = () => {
+        this.attackRun = false
+        this.expose = false
+        this.hack - false
         document.querySelector(`.player-mat_opponent`).classList.toggle(`hidden`)
         this.logMessage(`Combat begins!`)
         this.togglePlayerComponentListeners()
-        this.toggleSpecialActionListeners()
+        this.updateSpecialActionListeners()
     }
 
     togglePlayerComponentListeners = () => {
-        this.componentDisplay = document.querySelector(`.components_human`)
         this.components = this.componentDisplay.querySelectorAll(`.components__item`)
         this.components.forEach(component => {
             component.classList.toggle(`clickable`)
@@ -128,18 +136,50 @@ class Game {
         })
     }
 
-    toggleSpecialActionListeners = () => {
-        this.specialActions = document.querySelectorAll(`.special-actions__button`)
-        this.specialActions.forEach(action => {
-            action.classList.toggle(`clickable`)
-            if(action.classList.contains(`clickable`)){
-                action.addEventListener(`click`, this.handleSpecialActionClick)
-            }
-            else{
+    updateSpecialActionListeners = () => {
+        if(this.attackRun){
+            this.specialActions.forEach(action => {
+                action.classList.remove(`clickable`)
                 action.removeEventListener(`click`, this.handleSpecialActionClick)
+            });
+        }
+        else if(this.expose){
+            for(let i=0;i<this.specialActions.length;i++){
+                if(i<2){
+                    this.specialActions[i].classList.remove(`clickable`)
+                    this.specialActions[i].removeEventListener(`click`, this.handleSpecialActionClick)
+                }
             }
-            
-        })
+        }
+        else if(this.hack){
+            for(let i=0;i<this.specialActions.length;i++){
+                if(i===0 || i===2){
+                    this.specialActions[i].classList.remove(`clickable`)
+                    this.specialActions[i].removeEventListener(`click`, this.handleSpecialActionClick)
+                }
+            }
+        }
+        else{
+            this.specialActions.forEach(action => {
+                if(!action.classList.contains(`clickable`)){
+                    action.classList.add(`clickable`)
+                    action.addEventListener(`click`, this.handleSpecialActionClick)
+                }                
+            })
+        }
+        
+        
+
+    }
+
+    toggleCompleteTurnListener = () => {
+        this.completeTurn.classList.toggle(`clickable`)
+        if(this.completeTurn.classList.contains(`clickable`)){
+            this.completeTurn.addEventListener(`click`, this.handleCompleteTurnClick)
+        }
+        else{
+            this.completeTurn.removeEventListener(`click`, this.handleCompleteTurnClick)
+        }
     }
 
     findComponentIndex = (string) => {
@@ -153,7 +193,14 @@ class Game {
 
     handleSpecialActionClick = (evt) => {
         if(evt.target.classList.contains(`special-actions__button_attack-run`)){
+            this.attackRun = true
+            this.updateSpecialActionListeners()
             this.logMessage(`Select Weapon`)
+        }
+        else if(evt.target.classList.contains(`special-actions__button_expose`)){
+            this.expose = true
+            this.updateSpecialActionListeners()
+            this.completeAction()
         }
     }
 
@@ -173,14 +220,6 @@ class Game {
                 else if(this.findComponentIndex(`Heavy Missiles`) != -1){
                     this.lightMissileIndex = this.findComponentIndex(`Heavy Missiles`)
                 }
-                // for(let i=0; i<this.player.components.installed.length;i++){
-                //     if(this.player.components.installed[i].title === `Light Missiles`){
-                //         this.lightMissileIndex = i
-                //     }
-                //     else if(this.player.components.installed[i].title === `Heavy Missiles`){
-                //         this.heavyMissileIndex = i
-                //     }
-                // }
                 this.missileDialog.classList.toggle(`hidden`)
                 if(this.heavyMissileIndex && this.lightMissileIndex){
                     this.missileDialog.querySelector(`.missile-dialog__type`).classList.toggle(`hidden`)
@@ -196,6 +235,7 @@ class Game {
                 }
             }
         }
+        evt.target.classList.toggle(`focus`)
         
     }
 
@@ -239,14 +279,30 @@ class Game {
 
     completeAction = () => {
         let logString = ``
+        if(this.expose){
+            logString += `Outmaneuver and expose opponent`
+            this.specialActions[1].classList.remove(`clickable`)
+            this.specialActions[1].removeEventListener(`click`, this.handleSpecialActionClick)
+            if(this.turnActions.length > 0) logString += ` & `
+        }
+        if(this.attackRun){
+            logString += `Attack Run: `
+            this.togglePlayerComponentListeners()
+        }
         for(let i=0;i<this.turnActions.length;i++){
             logString += this.turnActions[i].log
             if(this.turnActions.length > 1 && i != this.turnActions.length){
-                logString += `, `
+                logString += ` & `
             }
         }
         this.logMessage(logString)
+        if(this.attackRun){
+            this.logMessage(`Press "Complete Turn"`)
+        }
         this.player.renderInstalledComponents()
+        if(!this.completeTurn.classList.contains(`clickable`)){
+            this.toggleCompleteTurnListener()
+        }
     }
 
     saveGame() {
