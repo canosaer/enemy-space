@@ -10,11 +10,13 @@ class Game {
         this.specialActions = document.querySelectorAll(`.special-actions__button`)
         this.componentDisplay = document.querySelector(`.components_human`)
         this.completeTurn = document.querySelector(`.complete`)
+        this.undoTurn = document.querySelector(`.undo`)
 
 
         this.lightMissileIndex = 0
         this.heavyMissileIndex = 0
         this.turnActions = []
+        this.restoreComponents = []
 
         this.setupListeners()
         new MessageHandler()
@@ -172,13 +174,20 @@ class Game {
 
     }
 
-    toggleCompleteTurnListener = () => {
+    toggleTurnButtonListeners = () => {
         this.completeTurn.classList.toggle(`clickable`)
         if(this.completeTurn.classList.contains(`clickable`)){
             this.completeTurn.addEventListener(`click`, this.handleCompleteTurnClick)
         }
         else{
             this.completeTurn.removeEventListener(`click`, this.handleCompleteTurnClick)
+        }
+        this.undoTurn.classList.toggle(`clickable`)
+        if(this.undoTurn.classList.contains(`clickable`)){
+            this.undoTurn.addEventListener(`click`, this.handleUndoTurnClick)
+        }
+        else{
+            this.undoTurn.removeEventListener(`click`, this.handleUndoTurnClick)
         }
     }
 
@@ -204,6 +213,18 @@ class Game {
         }
     }
 
+    handleUndoTurnClick = () =>{
+        if(this.attackRun) this.togglePlayerComponentListeners()
+        this.turnActions = []
+        this.expose = false
+        this.hack = false
+        this.attackRun = false
+        if(this.restoreComponents.length > 0) this.player.components.installed = this.restoreComponents
+        this.restoreComponents = []
+        this.player.components.installed[this.activeMissileIndex].counter = this.activeMissileQuantity
+        this.completeAction()
+    }
+
     handlePlayerComponentClick = (evt) => {
         evt.target.classList.toggle(`focus`)
         let targetBackground = evt.target.style.background.toString()
@@ -214,24 +235,32 @@ class Game {
                 }
             }
             if(this.selectedComponent.title === `Missile Launcher`){
+                this.lightMissileIndex = -1
+                this.heavyMissileIndex = -1
                 if(this.findComponentIndex(`Light Missiles`) != -1){
                     this.lightMissileIndex = this.findComponentIndex(`Light Missiles`)
                 }
                 else if(this.findComponentIndex(`Heavy Missiles`) != -1){
-                    this.lightMissileIndex = this.findComponentIndex(`Heavy Missiles`)
+                    this.heavyMissileIndex = this.findComponentIndex(`Heavy Missiles`)
                 }
-                this.missileDialog.classList.toggle(`hidden`)
-                if(this.heavyMissileIndex && this.lightMissileIndex){
+                if(this.heavyMissileIndex > -1 || this.lightMissileIndex > -1){
+                    this.missileDialog.classList.toggle(`hidden`)
+                }
+                if(this.heavyMissileIndex >-1 && this.lightMissileIndex > -1){
                     this.missileDialog.querySelector(`.missile-dialog__type`).classList.toggle(`hidden`)
                 }
                 else{
-                    if(this.lightMissileIndex){
+                    if(this.lightMissileIndex != -1){
                         this.activeMissileIndex = this.lightMissileIndex
+                        this.selectMissileNumber()
                     } 
-                    else{
+                    else if(this.heavyMissileIndex != -1){
                         this.activeMissileIndex = this.heavyMissileIndex
+                        this.selectMissileNumber()
                     }
-                    this.selectMissileNumber()
+                    else{
+                        this.logMessage(`No missiles left!`)
+                    }
                 }
             }
         }
@@ -244,18 +273,23 @@ class Game {
     }
 
     selectMissileNumber = () => {
+        if(this.restoreComponents.length === 0){
+            this.player.components.installed.forEach(component => {
+                this.restoreComponents.push(component)
+            });
+        }
         this.missileDialog.querySelector(`.missile-dialog__number`).classList.toggle(`hidden`)
-        let activeMissileQuantity = this.player.components.installed[this.activeMissileIndex].counter
+        this.activeMissileQuantity = this.player.components.installed[this.activeMissileIndex].counter
         if(this.activeMissileIndex === this.lightMissileIndex){
-            if (activeMissileQuantity > 4) this.maxMissiles = 4
-            else this.maxMissiles = activeMissileQuantity
+            if (this.activeMissileQuantity > 4) this.maxMissiles = 4
+            else this.maxMissiles = this.activeMissileQuantity
         }
         else{
-            if (activeMissileQUantity > 2) this.maxMissiles = 2
-            else this.maxMissiles = activeMissileQuantity
+            if (this.activeMissileQUantity > 2) this.maxMissiles = 2
+            else this.maxMissiles = this.activeMissileQuantity
         }
         for(let i=0; i<this.maxMissiles; i++){
-            this.missileNumbers[i].classList.toggle(`hidden`)
+            this.missileNumbers[i].classList.remove(`hidden`)
         }
     }
 
@@ -272,7 +306,6 @@ class Game {
         this.player.components.installed[this.activeMissileIndex].counter = this.player.components.installed[this.activeMissileIndex].counter - evt.target.textContent
         if(this.player.components.installed[this.activeMissileIndex].counter === 0){
             this.player.components.installed.splice(this.activeMissileIndex)
-            this.player.components.installed.splice(this.findComponentIndex(`Missile Launcher`))
         }
         this.completeAction()
     }
@@ -289,20 +322,30 @@ class Game {
             logString += `Attack Run: `
             this.togglePlayerComponentListeners()
         }
-        for(let i=0;i<this.turnActions.length;i++){
-            logString += this.turnActions[i].log
-            if(this.turnActions.length > 1 && i != this.turnActions.length){
-                logString += ` & `
+        if(this.turnActions.length>0){
+            for(let i=0;i<this.turnActions.length;i++){
+                logString += this.turnActions[i].log
+                if(this.turnActions.length > 1 && i != this.turnActions.length){
+                    logString += ` & `
+                }
             }
+        }
+
+        this.player.renderInstalledComponents()
+
+        if(!this.completeTurn.classList.contains(`clickable`)){
+            this.toggleTurnButtonListeners()
+        }
+        if (logString === ``){
+            logString = `Turn reset`
+            this.toggleTurnButtonListeners()
         }
         this.logMessage(logString)
         if(this.attackRun){
             this.logMessage(`Press "Complete Turn"`)
         }
-        this.player.renderInstalledComponents()
-        if(!this.completeTurn.classList.contains(`clickable`)){
-            this.toggleCompleteTurnListener()
-        }
+        
+        
     }
 
     saveGame() {
