@@ -12,7 +12,7 @@ class Game {
         this.completeTurn = document.querySelector(`.complete`)
         this.undoTurn = document.querySelector(`.undo`)
 
-
+        this.activeMissileIndex = -1
         this.lightMissileIndex = 0
         this.heavyMissileIndex = 0
         this.turnActions = []
@@ -211,6 +211,11 @@ class Game {
             this.updateSpecialActionListeners()
             this.completeAction()
         }
+        else{
+            this.hack = true
+            this.updateSpecialActionListeners()
+            this.completeAction()
+        }
     }
 
     handleUndoTurnClick = () =>{
@@ -219,9 +224,13 @@ class Game {
         this.expose = false
         this.hack = false
         this.attackRun = false
-        if(this.restoreComponents.length > 0) this.player.components.installed = this.restoreComponents
+        if(this.restoreComponents.length > 0){
+            this.player.components.installed = this.restoreComponents
+            if(this.activeMissileIndex != -1)
+            this.player.components.installed[this.activeMissileIndex].counter = this.activeMissileQuantity
+        }
         this.restoreComponents = []
-        this.player.components.installed[this.activeMissileIndex].counter = this.activeMissileQuantity
+        this.updateSpecialActionListeners()
         this.completeAction()
     }
 
@@ -314,8 +323,10 @@ class Game {
         let logString = ``
         if(this.expose){
             logString += `Outmaneuver and expose opponent`
-            this.specialActions[1].classList.remove(`clickable`)
-            this.specialActions[1].removeEventListener(`click`, this.handleSpecialActionClick)
+            if(this.turnActions.length > 0 || this.hack) logString += ` & `
+        }
+        if(this.hack){
+            logString += `Hack opponent's weapon systems`
             if(this.turnActions.length > 0) logString += ` & `
         }
         if(this.attackRun){
@@ -337,14 +348,13 @@ class Game {
             this.toggleTurnButtonListeners()
         }
         if (logString === ``){
-            logString = `Turn reset`
+            logString = `TURN RESET`
             this.toggleTurnButtonListeners()
         }
         this.logMessage(logString)
         if(this.attackRun){
             this.logMessage(`Press "Complete Turn"`)
         }
-        
         
     }
 
