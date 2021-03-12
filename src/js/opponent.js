@@ -22,6 +22,7 @@ class Opponent {
 
     setupListeners() {
         document.addEventListener(`setupOpponent`, this.setupOpponent)
+        document.addEventListener(`renderInstalledComponents`, this.renderInstalledComponents)
     }
 
     setupOpponent = (evt) => {
@@ -56,6 +57,22 @@ class Opponent {
     }
 
     renderInstalledComponents = () => {
+        let componentDisplay = document.querySelector(`.components_opponent`)
+        let consumableDisplay = document.querySelector(`.consumables_opponent`)
+        let oldRender = componentDisplay.querySelectorAll(`.components__item`)
+        let interactable = false
+
+        if(oldRender.length > 0 ){
+            if(oldRender[0].classList.contains(`clickable`)) interactable = true
+        }
+
+        oldRender.forEach(element => {
+            element.remove()
+        });
+        oldRender = consumableDisplay.querySelectorAll(`.consumables__item`)
+        oldRender.forEach(element => {
+            element.remove()
+        });
         this.components.forEach(component => {
             if(!component.counter){
                 let componentCard = document.createElement(`li`)
@@ -63,14 +80,18 @@ class Opponent {
                 componentCard.style.background = `url("${component.image}")`
                 componentCard.style.backgroundPosition = `center`
                 componentCard.style.backgroundSize = `cover`
-                document.querySelector(`.components_opponent`).appendChild(componentCard)
+                componentDisplay.appendChild(componentCard)
             }
             else{
                 let consumableItem = document.createElement(`li`)
                 consumableItem.classList.add(`consumables__item`)
                 consumableItem.textContent = `${component.title}: ${component.counter}`
-                document.querySelector(`.consumables_opponent`).appendChild(consumableItem)
+                consumableDisplay.appendChild(consumableItem)
             }
         });
+        if(interactable){
+            let evt = new CustomEvent(`toggleOpponentComponents`)
+            document.dispatchEvent(evt)
+        }
     }
 }

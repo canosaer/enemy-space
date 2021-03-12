@@ -9,6 +9,7 @@ class Game {
         this.missileTypes = document.querySelectorAll(`.missile-dialog__missile-type`)
         this.specialActions = document.querySelectorAll(`.special-actions__button`)
         this.componentDisplay = document.querySelector(`.components_human`)
+        this.oppComponentDisplay = document.querySelector(`.components_opponent`)
         this.completeTurn = document.querySelector(`.complete`)
         this.undoTurn = document.querySelector(`.undo`)
 
@@ -32,6 +33,7 @@ class Game {
         document.addEventListener(`removeCrewListeners`, this.toggleCrewListeners)
         document.addEventListener(`advancePhase`, this.advancePhase)
         document.addEventListener(`togglePlayerComponents`, this.togglePlayerComponentListeners)
+        document.addEventListener(`toggleOpponentComponents`, this.toggleOpponentComponentListeners)
         this.missileNumbers.forEach(button => {
             button.addEventListener(`click`, this.queueMissiles)
         });
@@ -134,6 +136,19 @@ class Game {
             }
             else{
                 component.removeEventListener(`click`, this.handlePlayerComponentClick)
+            }
+        })
+    }
+
+    toggleOpponentComponentListeners = () => {
+        this.oppComponents = this.oppComponentDisplay.querySelectorAll(`.components__item`)
+        this.oppComponents.forEach(component => {
+            component.classList.toggle(`clickable`)
+            if(component.classList.contains(`clickable`)){
+                component.addEventListener(`click`, this.handleOpponentComponentClick)
+            }
+            else{
+                component.removeEventListener(`click`, this.handleOpponentComponentClick)
             }
         })
     }
@@ -298,10 +313,14 @@ class Game {
                 }
             }
             else if(this.selectedComponent.title === `Countermeasures`){
-                this.countermeasures = true;
-                this.backupComponents()
-                this.player.components.installed.splice(this.findComponentIndex(`Countermeasures`), 1)
-                this.completeAction()
+                if(!this.attackRun){
+                    this.countermeasures = true;
+                    this.backupComponents()
+                    this.player.components.installed.splice(this.findComponentIndex(`Countermeasures`), 1)
+                    this.completeAction()
+                }
+                else this.logMessage(`Must select weapon for attack run.`)
+                
             }
         }
         evt.target.classList.toggle(`focus`)
@@ -395,6 +414,13 @@ class Game {
             this.logMessage(`Press "Complete Turn"`)
         }
         
+    }
+
+    handleCompleteTurnClick = () => {
+        let attack = 0;
+        array.forEach(element => {
+            
+        });
     }
 
     saveGame() {
