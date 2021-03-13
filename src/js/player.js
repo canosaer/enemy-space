@@ -121,6 +121,7 @@ class Player {
                 componentCard.style.background = `url("${component.image}")`
                 componentCard.style.backgroundPosition = `center`
                 componentCard.style.backgroundSize = `cover`
+                if(component.disabled) componentCard.classList.add(`disabled`)
                 componentDisplay.appendChild(componentCard)
             }
             else{

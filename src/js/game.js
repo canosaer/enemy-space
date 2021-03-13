@@ -3,6 +3,7 @@ class Game {
         this.referenceDeck = new Deck()
         this.gameDeck = new Deck()
         this.player = new Player()
+        this.opponent = new Opponent()
 
         this.missileDialog = document.querySelector(`.missile-dialog`)
         this.missileNumbers = document.querySelectorAll(`.missile-dialog__number-button`)
@@ -18,6 +19,10 @@ class Game {
         this.heavyMissileIndex = 0
         this.turnActions = []
         this.restoreComponents = []
+        this.defense = 5
+
+        this.opponentAttacked = false;
+        this.playerAttacked = false;
 
         this.setupListeners()
         new MessageHandler()
@@ -76,7 +81,7 @@ class Game {
     advancePhase = (evt) => {
         let gamePhase = sessionStorage.getItem('dm21GamePhase')
         if(gamePhase === `crewSetup`){
-            sessionStorage.setItem('dm21GamePhase', `combat`)
+            sessionStorage.setItem('dm21GamePhase', `started`)
             this.startLevel()
         }
     }
@@ -118,13 +123,107 @@ class Game {
     }
 
     startLevel = () => {
-        this.attackRun = false
         this.expose = false
         this.hack - false
         document.querySelector(`.player-mat_opponent`).classList.toggle(`hidden`)
-        this.logMessage(`Combat begins!`)
-        this.togglePlayerComponentListeners()
+        this.newRound()
+    }
+
+    newRound = () => {
+        this.logMessage(`New combat round begins!`)
+        this.attackRun = false
+        this.countermeasures = false
+        this.playerAttacked = false
+        this.opponentAttacked = false
+        this.turnActions = []
+        this.restoreComponents = []
         this.updateSpecialActionListeners()
+        this.player.renderInstalledComponents()
+        this.rollInitiative()
+    }
+
+    rollInitiative = () => {
+        let playerRoll = this.rollD6() + this.rollD6() + this.player.bonus.pilot
+        let oppRoll = this.rollD6() + this.rollD6() + this.opponent.bonus.pilot
+        if(playerRoll >= oppRoll){
+            this.logMessage(`Player's turn`)
+            if(!this.componentDisplay.querySelector(`.components__item`).classList.contains(`clickable`)) this.togglePlayerComponentListeners()
+        }
+        else{
+            this.logMessage(`Opponent's turn`)
+            this.opponentAttack()
+        }
+    }
+
+    opponentAttack = () => {
+        console.log(`start attack`)
+        this.opponentAttacked = true;
+        let attackValue = 0;
+        // let nonDisabled = 0;
+        let tempDefense = this.opponent.defense
+        let hackPenalty = 0;
+        let targetComponent = this.player.components.installed[0]
+        if(this.hack){
+            hackPenalty = this.player.bonus.engineer
+            this.hack = false
+        }
+        if(this.expose){
+            tempDefense = tempDefense - (0.1 * this.player.bonus.pilot)
+        }
+        if(this.level === 1){
+            // if(this.hack) multiActionPenalty++
+            if(this.opponent.components[1].counter > 1 ){
+                for(let i=0;i<2;i++){
+                    this.opponent.components[1].counter--
+                    let playerEvadeRoll = this.rollD6() + this.rollD6() + this.player.bonus.pilot
+                    if(playerEvadeRoll < 10){
+                        attackValue += 5
+                    }
+                }
+                this.opponent.renderInstalledComponents()
+            }
+            let adjustedAttack = attackValue - hackPenalty + this.opponent.bonus.gunner
+            if(adjustedAttack > 0){
+                if(this.resolveAttack(adjustedAttack) > this.player.defense){
+                    this.logMessage(`Enemy Attack Hit!`)
+                    this.player.components.forEach(component => {
+                        if(component.cost > targetComponent.cost && !component.disabled) targetComponent = component
+                    });
+                    this.logMessage(`${targetComponent.title} disabled.`)
+                    targetComponent.disabled = true
+                    this.player.renderInstalledComponents()
+                    if(!this.playerAttacked) this.togglePlayerComponentListeners()
+                    else this.newRound()
+
+                    // if(nonDisabled === 1){
+                    //     this.logMessage(`Enemy Ship Destroyed!`)
+                    //     this.proceedToDock()
+                    // }
+                    // else{
+                    //     this.logMessage(`Select a component on the enemy ship to disable.`)
+                    //     this.toggleOpponentComponentListeners()
+                    // }
+
+                    
+                }
+                else{
+                    this.logMessage(`Enemy Attack Missed!`)
+                    this.logMessage(`Player's turn`)
+                    if(!this.playerAttacked){
+                        if(!this.componentDisplay.querySelector(`.components__item`).classList.contains(`clickable`)) this.togglePlayerComponentListeners()
+                    }
+                    else this.newRound()
+                }
+            }
+            else{
+                this.logMessage(`Enemy Attack Missed!`)
+                this.logMessage(`Player's turn`)
+                if(!this.playerAttacked){
+                    if(!this.componentDisplay.querySelector(`.components__item`).classList.contains(`clickable`)) this.togglePlayerComponentListeners()
+                }
+                else this.newRound()
+            }
+        }
     }
 
     togglePlayerComponentListeners = () => {
@@ -259,6 +358,18 @@ class Game {
         this.completeAction()
     }
 
+    handleOpponentComponentClick = (evt) =>{
+        let targetBackground = evt.target.style.background.toString()
+        for(let i=0; i<this.opponent.components.length;i++){
+            if(targetBackground.indexOf(this.opponent.components[i].image) != -1){
+                this.opponent.components[i].disabled = true
+            }
+        }
+        this.opponent.renderInstalledComponents()
+        this.toggleOpponentComponentListeners()
+        this.newRound()
+    }
+
     handlePlayerComponentClick = (evt) => {
         evt.target.classList.toggle(`focus`)
         let targetBackground = evt.target.style.background.toString()
@@ -362,7 +473,7 @@ class Game {
         let action = {
             log: `Fire ${evt.target.textContent} ${this.player.components.installed[this.activeMissileIndex].title}`,
             type: `attack`,
-            missiles: evt.target.textContent,
+            missiles: parseInt(evt.target.textContent),
             value: this.player.components.installed[this.activeMissileIndex].attack
         }
         this.turnActions.push(action)
@@ -417,10 +528,87 @@ class Game {
     }
 
     handleCompleteTurnClick = () => {
-        let attack = 0;
-        array.forEach(element => {
-            
+        this.playerAttacked = true
+        this.toggleTurnButtonListeners()
+        let attackValue = 0;
+        let multiActionPenalty = 0;
+        let nonDisabled = 0;
+        if(this.expose) multiActionPenalty++
+        if(this.hack) multiActionPenalty++
+        if(this.turnActions.length > 1){
+            multiActionPenalty += (this.turnActions.length-1)
+        }
+        this.turnActions.forEach(action => {
+            if(action.missiles > 0){
+                for(let i=0;i<action.missiles;i++){
+                    let oppEvadeRoll = this.rollD6() + this.rollD6() + this.opponent.bonus.pilot
+                    if(oppEvadeRoll < 10){
+                        attackValue += action.value
+                    }
+                }
+            }
+            else if(!action.missiles && action.value){
+                attackValue += action.value
+            }
         });
+        if(this.attackRun) attackValue++
+        let adjustedAttack = attackValue - multiActionPenalty + this.player.bonus.gunner
+        if(adjustedAttack > 0){
+            if(this.resolveAttack(adjustedAttack) > this.opponent.defense){
+                this.logMessage(`Attack Hit!`)
+                this.opponent.components.forEach(component => {
+                    if(!component.counter && !component.disabled) nonDisabled++
+                });
+                if(nonDisabled === 1){
+                    this.logMessage(`Enemy Ship Destroyed!`)
+                    this.proceedToDock()
+                }
+                else{
+                    this.logMessage(`Select a component on the enemy ship to disable.`)
+                    this.toggleOpponentComponentListeners()
+                }
+
+                
+            }
+            else{
+                this.logMessage(`Attack Missed!`)
+
+                if(!this.opponentAttacked) this.opponentAttack()
+                else this.newRound()
+            }
+        }
+        else{
+            this.logMessage(`Attack Missed!`)
+            if(!this.opponentAttacked) this.opponentAttack()
+            else this.newRound()
+        }
+
+
+    }
+    
+
+    proceedToDock = () => {
+        document.querySelector(`.player-mat_opponent`).classList.toggle(`hidden`)
+        document.querySelector(`.proceed-to-dock`).classList.toggle(`hidden`)
+    }
+
+    rollD6 = () => {
+        return Math.floor(Math.random() * 6) + 1
+    }
+
+    resolveAttack = (dice) => {
+        let dieResults = []
+        for(let i = 0; i < dice; i++) {
+            dieResults[i] = this.rollD6()
+        }
+        dieResults.sort()
+        let attackResult = dieResults[dieResults.length-1]
+        let firstResult = dieResults.indexOf(attackResult)
+        if(firstResult<dieResults.length-1){
+            let bonus = (dieResults.length-1) - firstResult
+            attackResult = attackResult + (bonus * 0.2)
+        }
+        return attackResult
     }
 
     saveGame() {

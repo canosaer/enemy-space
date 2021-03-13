@@ -287,8 +287,8 @@ a {
 .player-mat {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 0.25fr 1fr 4fr 1fr 1.5fr 1fr 1fr 0.25fr;
-  grid-template-columns: 0.25fr 1fr 4fr 1fr 1.5fr 1fr 1fr 0.25fr;
+  -ms-grid-columns: 0.25fr 1fr 4fr 1fr 13.5% 1fr 1fr 0.25fr;
+  grid-template-columns: 0.25fr 1fr 4fr 1fr 13.5% 1fr 1fr 0.25fr;
   grid-auto-rows: auto;
   padding-top: 0.5rem;
 }
@@ -526,9 +526,10 @@ a {
   text-align: center;
   padding: 0.25rem;
   font-size: 0.6rem;
-  margin: 0rem 0 0.25rem 7.5%;
+  margin: 0rem auto 0.25rem auto;
   border-radius: 9999px;
   text-transform: uppercase;
+  max-width: 4.1rem;
 }
 
 .complete {
@@ -538,7 +539,7 @@ a {
   line-height: 1.1;
   padding: 0.5rem 0.25rem;
   font-size: 0.7rem;
-  margin: 0.5rem 0 0.5rem 7.5%;
+  margin: 0.5rem auto 0.5rem auto;
   max-width: 4.1rem;
   border-radius: 9999px;
   text-transform: uppercase;
@@ -560,6 +561,7 @@ a {
   -ms-grid-column-span: 1;
   grid-column: 7/8;
   margin: -0.8rem auto 0 auto;
+  max-width: 4.1rem;
 }
 .xp__heading {
   color: palevioletred;
@@ -576,11 +578,35 @@ a {
   font-size: 1rem;
 }
 
+.proceed-to-dock {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+.proceed-to-dock__heading {
+  color: palegoldenrod;
+  font-size: 2.75rem;
+  margin: 1rem auto;
+}
+.proceed-to-dock__button {
+  width: 40%;
+  background: slategray;
+  color: white;
+  text-align: center;
+  padding: 0.25rem;
+  font-size: 1.25rem;
+  margin: 0rem auto;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
 .spacedock {
   -ms-grid-columns: 0.25fr 1fr 6.6fr 1fr 1.5fr;
   grid-template-columns: 0.25fr 1fr 6.6fr 1fr 1.5fr;
   margin-top: 2.5rem;
-  display: none;
+  display: -ms-grid;
+  display: grid;
   grid-auto-rows: auto;
   padding: 0.5rem 0 2%;
 }
@@ -686,5 +712,9 @@ a {
 .focus {
   border: 2px solid palegoldenrod;
   border-radius: 5%;
+}
+
+.disabled {
+  border: 2px solid salmon;
 }
 /*# sourceMappingURL=main.css.map */

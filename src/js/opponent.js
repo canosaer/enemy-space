@@ -33,9 +33,11 @@ class Opponent {
                 referenceDeck.cards[9],
                 referenceDeck.cards[0]
             ]
+            this.components[1].counter = 12
             this.bonus.engineer = 1
             this.bonus.gunner = 1
             this.bonus.pilot = 1
+            this.defense = 5
             this.crewElements.pilot.textContent = this.bonus.pilot
             this.crewElements.gunner.textContent = this.bonus.gunner
             this.crewElements.engineer.textContent = this.bonus.engineer
@@ -80,6 +82,7 @@ class Opponent {
                 componentCard.style.background = `url("${component.image}")`
                 componentCard.style.backgroundPosition = `center`
                 componentCard.style.backgroundSize = `cover`
+                if(component.disabled) componentCard.classList.add(`disabled`)
                 componentDisplay.appendChild(componentCard)
             }
             else{
