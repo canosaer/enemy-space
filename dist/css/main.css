@@ -182,6 +182,7 @@ a {
   -ms-grid-columns: 1fr;
   grid-template-columns: 1fr;
   grid-auto-rows: auto;
+  position: relative;
 }
 .title-screen__title {
   grid-column: 1/-1;
@@ -244,14 +245,12 @@ a {
   color: white;
   font-family: "Gugi", cursive;
   text-transform: uppercase;
-  cursor: pointer;
 }
 .game-display__subtitle {
   font-size: 2rem;
   color: palevioletred;
   font-family: "Yellowtail", cursive;
   text-align: center;
-  cursor: pointer;
   margin-bottom: 0.5rem;
 }
 .game-display__footer {
@@ -318,11 +317,6 @@ a {
   border-radius: 5%;
   margin-bottom: 0.5rem;
 }
-.ship-display__image_opponent {
-  background: url("../../src/img/ships/fighter.png");
-  background-position: center;
-  background-size: cover;
-}
 .ship-display__image_human {
   background: url("../../src/img/ships/playership.png");
   background-position: center;
@@ -333,9 +327,6 @@ a {
   text-align: center;
   font-size: 0.8rem;
   text-transform: uppercase;
-}
-.ship-display__name_human {
-  cursor: pointer;
 }
 
 .components {
@@ -697,12 +688,40 @@ a {
   content: "Capacity";
 }
 
+.instructions {
+  position: absolute;
+  top: 8rem;
+  left: 5%;
+  background: white;
+  padding: 1rem 1rem 1rem;
+  width: 90%;
+}
+.instructions__text {
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+.instructions__close {
+  position: absolute;
+  font-size: 2.1rem;
+  top: -1rem;
+  left: -1rem;
+  color: palevioletred;
+  cursor: pointer;
+}
+.instructions__close:hover {
+  font-weight: bold;
+}
+
 .hidden {
   display: none;
 }
 
 .clickable {
   cursor: pointer;
+}
+.clickable:hover {
+  -webkit-filter: brightness(120%);
+          filter: brightness(120%);
 }
 
 .red {

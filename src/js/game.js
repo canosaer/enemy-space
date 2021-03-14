@@ -33,8 +33,8 @@ class Game {
     }
 
     setupListeners(){
-        document.querySelector(`.game-display__title`).addEventListener(`click`, this.returnToTitle)
-        document.querySelector(`.game-display__subtitle`).addEventListener(`click`, this.returnToTitle)
+        // document.querySelector(`.game-display__title`).addEventListener(`click`, this.returnToTitle)
+        // document.querySelector(`.game-display__subtitle`).addEventListener(`click`, this.returnToTitle)
         document.addEventListener(`removeCrewListeners`, this.toggleCrewListeners)
         document.addEventListener(`advancePhase`, this.advancePhase)
         document.addEventListener(`togglePlayerComponents`, this.togglePlayerComponentListeners)
@@ -47,14 +47,15 @@ class Game {
         });
     }
 
-    returnToTitle() {
+    returnToTitle = () => {
         localStorage.setItem('dm21GameState', `paused`)
         document.querySelector(`.title-screen`).classList.remove(`hidden`)
         document.querySelector(`.game-display`).classList.add(`hidden`)
     }
 
     setupShip = () => {
-        this.level = 1
+        // this.level = 1
+        this.level = 2
         this.player.components.installed = [
             this.referenceDeck.cards[5],
             this.referenceDeck.cards[6],
@@ -232,6 +233,57 @@ class Game {
                 else this.newRound()
             }
         }
+        if(this.level === 2){
+            let adjustedAttack = 5 - hackPenalty + this.opponent.bonus.gunner
+            if(adjustedAttack > 1){
+                let attackRoll = this.resolveAttack(adjustedAttack)
+                if( attackRoll > this.player.defense){
+                    this.logMessage(`Enemy Attack Hit!`)
+                    this.player.components.installed.forEach(component => {
+                        if(component.cost > targetComponent.cost && !component.disabled) targetComponent = component
+                    });
+                    // this.logMessage(`${targetComponent.title} disabled.`)
+                    targetComponent.disabled = true
+
+                    this.player.components.installed.forEach(component => {
+                        if(!component.counter && !component.disabled && component.attack) nonDisabled++
+                    });
+                    if(nonDisabled === 0){
+                        document.querySelector(`.player-mat_opponent`).classList.toggle(`hidden`)
+                        document.querySelector(`.player-mat_human`).classList.toggle(`hidden`)
+                        document.querySelector(`.defeat`).classList.toggle(`hidden`)
+                    }
+                    else{
+                        this.player.renderInstalledComponents()
+                        if(!this.playerAttacked){
+                            this.logMessage(`Player's turn`)
+                            if(!this.componentDisplay.querySelector(`.components__item`).classList.contains(`clickable`)) this.togglePlayerComponentListeners()
+                            this.updateSpecialActionListeners()
+                        } 
+                        else this.newRound()
+                    }
+                }
+                else{
+                    this.logMessage(`Enemy Attack Missed!`)
+                    if(!this.playerAttacked){
+                        this.logMessage(`Player's turn`)
+                        this.updateSpecialActionListeners()
+                        if(!this.componentDisplay.querySelector(`.components__item`).classList.contains(`clickable`)) this.togglePlayerComponentListeners()
+                    }
+                    else this.newRound()
+                }
+            }
+            else{
+                this.logMessage(`Enemy Attack Missed!`)
+                this.logMessage(`Player's turn`)
+                if(!this.playerAttacked){
+                    if(!this.componentDisplay.querySelector(`.components__item`).classList.contains(`clickable`)) this.togglePlayerComponentListeners()
+                }
+                else this.newRound()
+            }
+        }
+        
+        
     }
 
     togglePlayerComponentListeners = () => {
@@ -373,7 +425,6 @@ class Game {
         for(let i=0; i<this.opponent.components.length;i++){
             if(targetBackground.indexOf(this.opponent.components[i].image) != -1){
                 this.opponent.components[i].disabled = true
-                console.log(`yo`)
             }
         }
         this.opponent.renderInstalledComponents()
@@ -467,7 +518,7 @@ class Game {
             else this.maxMissiles = this.activeMissileQuantity
         }
         for(let i=0; i<this.maxMissiles; i++){
-            this.missileNumbers[i].classList.remove(`hidden`)
+            this.missileNumbers[i].classList.toggle(`hidden`)
         }
     }
 
@@ -480,6 +531,9 @@ class Game {
     }
 
     queueMissiles = (evt) => {
+        for(let i=0; i<this.maxMissiles; i++){
+            this.missileNumbers[i].classList.toggle(`hidden`)
+        }
         this.missileDialog.querySelector(`.missile-dialog__number`).classList.toggle(`hidden`)
         this.missileDialog.classList.toggle(`hidden`)
         let action = {

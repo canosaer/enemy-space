@@ -27,6 +27,15 @@
 				<li class="title-screen__item title-screen__item_new">New Game</li>
 				<li class="title-screen__item title-screen__item_instructions">Instructions</li>
 			</ul>
+			<section class="instructions hidden">
+				<i class="instructions__close far fa-times-circle"></i>
+				<p class="instructions__text">In Dark Moon: Enemy Space, you must destroy the enemy ship before it destroys you!</p>
+				<p class="instructions__text">You have three crew members on your ship. Your pilot maneuvers your ship and will help you fire before your enemies have a chance to react. Your gunner is in charge of your weapons and will increase the likelihood that you'll hit your target. Your engineer is a technical expert and can help you hack into your enemies' weapon systems and repair your damaged components.</p>
+				<p class="instructions__text">On your turn, you must decide which weapons you'll use to attack the enemy ship. If you want to fire a weapon, just click on it! You can also select the "Attack Run" special action and then select the desired weapon. Attack Run gives you an attack bonus, but it prevents you from taking any other actions on your turn.</p>
+				<p class="instructions__text">You can fire multiple weapons and take multiple special actions (other than Attack Run) on your turn. Taking multiple actions on your turn reduces your chances of success, so be careful not to take too many actions!</p>
+				<p class="instructions__text">The Expose special action reduces your opponent's defense until their next action. The Hack special action reduces the effectiveness of their next attack.</p>
+				<p class="instructions__text">Once you have selected all the actions you wish to take on a turn, click "Complete Turn" to execute them!</p>
+			</section>
 			<footer class="title-screen__footer">&#169; 2021 by Eric Canosa</footer>
 		</section>
 		<section class="game-display hidden">
@@ -99,11 +108,13 @@
 			</section>
 			<section class="proceed-to-dock hidden">
 				<h3 class="proceed-to-dock__heading">Enemy Ship Destroyed!</h3>
-				<div class="proceed-to-dock__button">Proceed to Space Dock</div>
+				<!-- <h3 class="proceed-to-dock__heading">Enemy Ship Destroyed!</h3>
+				<div class="proceed-to-dock__button">Proceed to Space Dock</div> -->
 			</section>
 			<section class="defeat hidden">
-				<h3 class="defeat__heading">Ship Destroyed!</h3>
-				<div class="defeat__button">Reset Game</div>
+				<h3 class="proceed-to-dock__heading">Your Ship Was Destroyed!</h3>
+				<!-- <h3 class="defeat__heading">Ship Destroyed!</h3>
+				<div class="defeat__button">Reset Game</div> -->
 			</section>
 			<section class="spacedock hidden">
 				<ul class="storage">

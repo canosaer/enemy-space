@@ -50,6 +50,7 @@ a {
 	// display: none;
 	grid-template-columns: 1fr;
 	grid-auto-rows: auto;
+	position: relative;
 
 	&__title{
 		grid-column: 1/-1;
@@ -118,7 +119,7 @@ a {
 		color: white;
 		font-family: variables.$title;
 		text-transform: uppercase;
-		cursor: pointer;
+		// cursor: pointer;
 	}
 
 	&__subtitle{
@@ -126,7 +127,7 @@ a {
 		color: palevioletred;
 		font-family: variables.$handwriting;
 		text-align: center;
-		cursor: pointer;
+		// cursor: pointer;
 		margin-bottom: 0.5rem;
 	}
 
@@ -189,11 +190,11 @@ a {
 		border-radius: 5%;
 		margin-bottom: 0.5rem;
 		
-		&_opponent{
-		background: url("../../src/img/ships/fighter.png");
-		background-position: center;
-		background-size: cover;
-		}
+		// &_opponent{
+		// background: url("../../src/img/ships/fighter.png");
+		// background-position: center;
+		// background-size: cover;
+		// }
 
 		&_human{
 		background: url("../../src/img/ships/playership.png");
@@ -208,9 +209,9 @@ a {
 		font-size: 0.8rem;
 		text-transform: uppercase;
 
-		&_human{
-			cursor: pointer;
-		}
+		// &_human{
+		// 	cursor: pointer;
+		// }
 	}
 }
 
@@ -486,6 +487,34 @@ a {
 	}
 }
 
+.instructions{
+	position: absolute;
+	top: 8rem;
+	left: 5%;
+	background: white;
+	padding: 1rem 1rem 1rem;
+	width: 90%;
+
+	&__text{
+		margin-bottom: 0.5rem;
+		line-height: 1.25;
+	}
+
+	&__close{
+		position: absolute;
+		font-size: 2.1rem;
+		// margin: -3rem 0 0.5rem -2rem;
+		top: -1rem;
+		left: -1rem;
+		color: palevioletred;
+		cursor: pointer;
+
+		&:hover{
+			font-weight: bold;
+		}
+	}
+}
+
 // ----- UTILITY -----
 
 .hidden{
@@ -494,6 +523,10 @@ a {
 
 .clickable{
 	cursor: pointer;
+
+	&:hover{
+		filter: brightness(120%);
+	}
 }
 
 .red{

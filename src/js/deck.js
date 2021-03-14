@@ -14,7 +14,7 @@ class Deck {
             {title: `Particle Beam`, size: 3, cost: 500, attack: 5, image: `../../src/img/components/particle_beam.png`},
             {title: `Auto Cannon`, size: 1, cost: 100, attack: 1, image: `../../src/img/components/auto_cannon.png`},
             {title: `Countermeasures`, size: 0.5, cost: 30, image: `../../src/img/components/countermeasures.png`},
-            {title: `Armor`, size: 0.5, cost: 30, image: `../../src/img/components/countermeasures.jpg`},
+            {title: `Armor`, size: 0.5, cost: 30, image: `../../src/img/components/armor.png`},
             {title: `Artificial Intelligence`, size: 1, cost: 300, image: `../../src/img/components/artificial_intelligence.png`},
             {title: `Missile Launcher`, size: 1, cost: 300, image: `../../src/img/components/missile_launcher.png`},
             {title: `Shields`, size: 3, cost: 150, image: `../../src/img/components/shields.png`},

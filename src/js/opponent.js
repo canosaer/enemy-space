@@ -26,9 +26,13 @@ class Opponent {
     }
 
     setupOpponent = (evt) => {
+        let shipImage = document.querySelector(`.ship-display__image_opponent`)
         let { level } = evt.detail
         let { referenceDeck } = evt.detail
         if(level===1){
+            shipImage.style.background = `url("../../src/img/ships/fighter.png")`
+            shipImage.style.backgroundPosition = `center`
+            shipImage.style.backgroundSize = `cover`
             this.components = [
                 referenceDeck.cards[9],
                 referenceDeck.cards[0]
@@ -44,6 +48,25 @@ class Opponent {
             this.name = `Blob Fighter`
             this.nameElement.textContent = this.name
 
+        }
+        else if(level===2){
+            shipImage.style.background = `url("../../src/img/ships/battleship.png")`
+            shipImage.style.backgroundPosition = `center`
+            shipImage.style.backgroundSize = `cover`
+            this.components = [
+                referenceDeck.cards[4],
+                referenceDeck.cards[7],
+                referenceDeck.cards[11]
+            ]
+            this.bonus.engineer = 1
+            this.bonus.gunner = 1
+            this.bonus.pilot = 1
+            this.defense = 5.2
+            this.crewElements.pilot.textContent = this.bonus.pilot
+            this.crewElements.gunner.textContent = this.bonus.gunner
+            this.crewElements.engineer.textContent = this.bonus.engineer
+            this.name = `Battle Blob`
+            this.nameElement.textContent = this.name
         }
         this.renderInstalledComponents()
     }

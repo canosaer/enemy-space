@@ -1,7 +1,7 @@
 class TitleScreen {
     
     constructor(){
-        this.checkState()
+        // this.checkState()
         this.setupListeners()
     }
 
@@ -18,6 +18,7 @@ class TitleScreen {
         document.querySelector(`.title-screen__item_new`).addEventListener(`click`, this.startGame)
         document.querySelector(`.title-screen__item_instructions`).addEventListener(`click`, this.toggleInstructions)
         document.querySelector(`.title-screen__item_continue`).addEventListener(`click`, this.continueGame)
+        document.querySelector(`.instructions__close`).addEventListener(`click`, this.toggleInstructions)
     }
 
     startGame = () => {
@@ -28,7 +29,7 @@ class TitleScreen {
     }
 
     toggleInstructions() {
-        console.log(`instructions`)
+        document.querySelector(`.instructions`).classList.toggle(`hidden`)
     }
 
     continueGame() {
