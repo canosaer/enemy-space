@@ -13,6 +13,7 @@ class Player {
         }
 
         this.repeat = false
+        this.defense = 5
 
         this.crewElements = {
             pilot: document.querySelector(`.crew__pilot-level_human`),

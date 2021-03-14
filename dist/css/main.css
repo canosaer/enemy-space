@@ -578,18 +578,18 @@ a {
   font-size: 1rem;
 }
 
-.proceed-to-dock {
+.proceed-to-dock, .defeat {
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
           flex-direction: column;
 }
-.proceed-to-dock__heading {
+.proceed-to-dock__heading, .defeat__heading {
   color: palegoldenrod;
   font-size: 2.75rem;
   margin: 1rem auto;
 }
-.proceed-to-dock__button {
+.proceed-to-dock__button, .defeat__button {
   width: 40%;
   background: slategray;
   color: white;

@@ -130,8 +130,9 @@ class Game {
     }
 
     newRound = () => {
-        this.logMessage(`New combat round begins!`)
+        // this.logMessage(`New combat round begins!`)
         this.attackRun = false
+        this.expose = false
         this.countermeasures = false
         this.playerAttacked = false
         this.opponentAttacked = false
@@ -156,13 +157,15 @@ class Game {
     }
 
     opponentAttack = () => {
-        console.log(`start attack`)
         this.opponentAttacked = true;
         let attackValue = 0;
-        // let nonDisabled = 0;
         let tempDefense = this.opponent.defense
         let hackPenalty = 0;
-        let targetComponent = this.player.components.installed[0]
+        let targetComponent = {}
+        let nonDisabled = 0
+        for(let i = this.player.components.installed.length-1 ; i>-1; i--){
+            if(!this.player.components.installed[i].disabled) targetComponent = this.player.components.installed[i]
+        }
         if(this.hack){
             hackPenalty = this.player.bonus.engineer
             this.hack = false
@@ -171,7 +174,6 @@ class Game {
             tempDefense = tempDefense - (0.1 * this.player.bonus.pilot)
         }
         if(this.level === 1){
-            // if(this.hack) multiActionPenalty++
             if(this.opponent.components[1].counter > 1 ){
                 for(let i=0;i<2;i++){
                     this.opponent.components[1].counter--
@@ -183,33 +185,39 @@ class Game {
                 this.opponent.renderInstalledComponents()
             }
             let adjustedAttack = attackValue - hackPenalty + this.opponent.bonus.gunner
-            if(adjustedAttack > 0){
-                if(this.resolveAttack(adjustedAttack) > this.player.defense){
+            if(adjustedAttack > 1){
+                let attackRoll = this.resolveAttack(adjustedAttack)
+                if( attackRoll > this.player.defense){
                     this.logMessage(`Enemy Attack Hit!`)
-                    this.player.components.forEach(component => {
+                    this.player.components.installed.forEach(component => {
                         if(component.cost > targetComponent.cost && !component.disabled) targetComponent = component
                     });
-                    this.logMessage(`${targetComponent.title} disabled.`)
+                    // this.logMessage(`${targetComponent.title} disabled.`)
                     targetComponent.disabled = true
-                    this.player.renderInstalledComponents()
-                    if(!this.playerAttacked) this.togglePlayerComponentListeners()
-                    else this.newRound()
 
-                    // if(nonDisabled === 1){
-                    //     this.logMessage(`Enemy Ship Destroyed!`)
-                    //     this.proceedToDock()
-                    // }
-                    // else{
-                    //     this.logMessage(`Select a component on the enemy ship to disable.`)
-                    //     this.toggleOpponentComponentListeners()
-                    // }
-
-                    
+                    this.player.components.installed.forEach(component => {
+                        if(!component.counter && !component.disabled && component.attack) nonDisabled++
+                    });
+                    if(nonDisabled === 0){
+                        document.querySelector(`.player-mat_opponent`).classList.toggle(`hidden`)
+                        document.querySelector(`.player-mat_human`).classList.toggle(`hidden`)
+                        document.querySelector(`.defeat`).classList.toggle(`hidden`)
+                    }
+                    else{
+                        this.player.renderInstalledComponents()
+                        if(!this.playerAttacked){
+                            this.logMessage(`Player's turn`)
+                            if(!this.componentDisplay.querySelector(`.components__item`).classList.contains(`clickable`)) this.togglePlayerComponentListeners()
+                            this.updateSpecialActionListeners()
+                        } 
+                        else this.newRound()
+                    }
                 }
                 else{
                     this.logMessage(`Enemy Attack Missed!`)
-                    this.logMessage(`Player's turn`)
                     if(!this.playerAttacked){
+                        this.logMessage(`Player's turn`)
+                        this.updateSpecialActionListeners()
                         if(!this.componentDisplay.querySelector(`.components__item`).classList.contains(`clickable`)) this.togglePlayerComponentListeners()
                     }
                     else this.newRound()
@@ -342,7 +350,9 @@ class Game {
     }
 
     handleUndoTurnClick = () =>{
-        if(this.attackRun) this.togglePlayerComponentListeners()
+        if(this.attackRun) {
+            if(!this.componentDisplay.querySelector(`.components__item`).classList.contains(`clickable`)) this.togglePlayerComponentListeners()
+        }
         this.turnActions = []
         this.expose = false
         this.hack = false
@@ -363,6 +373,7 @@ class Game {
         for(let i=0; i<this.opponent.components.length;i++){
             if(targetBackground.indexOf(this.opponent.components[i].image) != -1){
                 this.opponent.components[i].disabled = true
+                console.log(`yo`)
             }
         }
         this.opponent.renderInstalledComponents()
@@ -379,7 +390,8 @@ class Game {
                     this.selectedComponent = this.player.components.installed[i]
                 }
             }
-            if(this.selectedComponent.title === `Missile Launcher`){
+            if(this.selectedComponent.disabled) this.logMessage(`Component has been disabled!`)
+            else if(this.selectedComponent.title === `Missile Launcher`){
                 this.lightMissileIndex = -1
                 this.heavyMissileIndex = -1
                 if(this.findComponentIndex(`Light Missiles`) != -1){
