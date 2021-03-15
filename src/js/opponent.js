@@ -30,7 +30,7 @@ class Opponent {
         let { level } = evt.detail
         let { referenceDeck } = evt.detail
         if(level===1){
-            shipImage.style.background = `url("../../src/img/ships/fighter.png")`
+            shipImage.style.background = `url("src/img/ships/fighter.png")`
             shipImage.style.backgroundPosition = `center`
             shipImage.style.backgroundSize = `cover`
             this.components = [
@@ -50,7 +50,7 @@ class Opponent {
 
         }
         else if(level===2){
-            shipImage.style.background = `url("../../src/img/ships/battleship.png")`
+            shipImage.style.background = `url("src/img/ships/battleship.png")`
             shipImage.style.backgroundPosition = `center`
             shipImage.style.backgroundSize = `cover`
             this.components = [
